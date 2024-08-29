@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,14 @@ namespace Repositories
 {
     public interface IUserLoginRepository
     {
+        Task<CustomActionResult<decimal>> getUserByUsernameAndPassword(string username,string password)
+    }
 
+    public class UserLoginRepository : IUserLoginRepository
+    {
+        public Task<CustomActionResult<decimal>> getUserByUsernameAndPassword(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
