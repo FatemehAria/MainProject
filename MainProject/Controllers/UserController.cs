@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Services;
 
 namespace MainProject.Controllers
@@ -14,9 +15,9 @@ namespace MainProject.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> CreateUser(UserModel model)
         {
-            return Ok();
+            return Ok(await _userService.createUser(model));
         }
     }
 }
