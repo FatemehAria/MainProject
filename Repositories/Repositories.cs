@@ -20,12 +20,20 @@ namespace Repositories
     }
     public class UserRepository : IUserRepositories
     {
+        private readonly IDatabaseConnection _dbConnection;
+
+        public UserRepository(IDatabaseConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
         public async Task<CustomActionResult> createUser(UserModel model)
         {
             CustomActionResult result = new CustomActionResult();
             try
             {
-                using (var connection = new MySqlConnection("server=localhost;database=main_project_db;user=root;password=;"))
+                var connection = await _dbConnection.connectToDatabase();
+                if (!connection.success) return result;
+                using (connection.data)
                 {
                     var command = "prc_create_user";
                     DynamicParameters parameters = new DynamicParameters();
@@ -33,7 +41,7 @@ namespace Repositories
                     parameters.Add(name: "last_name", value: model.lastName);
                     parameters.Add(name: "phone_number", value: model.phoneNumber);
 
-                    await connection.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                     result.message = "user created.";
                     result.success = true;
                 }

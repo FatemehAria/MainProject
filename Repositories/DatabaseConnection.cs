@@ -17,7 +17,6 @@ namespace Repositories
     {
         private IDbConnection _connection;
 
-
         public async Task<CustomActionResult<IDbConnection>> connectToDatabase()
         {
             CustomActionResult<IDbConnection> connectionStatus = new CustomActionResult<IDbConnection>();
@@ -28,6 +27,7 @@ namespace Repositories
                     _connection = new MySqlConnection("server=localhost;database=main_project_db;user=root;password=;");
                 }
                 connectionStatus.success = true;
+                connectionStatus.data = _connection;
                 connectionStatus.message = "connection to database successfull.";
             }
             catch
