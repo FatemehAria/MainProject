@@ -6,7 +6,7 @@ namespace Repositories
 {
     public interface IUserRepositories
     {
-        Task<bool> createUser(UserModel model);
+        Task<CustomActionResult> createUser(UserModel model);
 
         Task<List<UserModel>> getUsers();
 
@@ -19,7 +19,7 @@ namespace Repositories
     }
     public class UserRepository : IUserRepositories
     {
-        public async Task<bool> createUser(UserModel model)
+        public async Task<CustomActionResult> createUser(UserModel model)
         {
             try
             {
