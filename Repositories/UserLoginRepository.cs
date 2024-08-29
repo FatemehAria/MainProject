@@ -30,10 +30,17 @@ namespace Repositories
                 parameters.Add(name: "username", value: model.phoneNumber);
                 parameters.Add(name: "password", value: model.password);
 
-                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                result.message = "login successful.";
-                result.success = true;
-
+                result.data = await connection.data.QueryFirstOrDefaultAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                if (result.data != 0)
+                {
+                    result.message = "login successful.";
+                    result.success = true;
+                }
+                else
+                {
+                    result.message = "invalid username or password.";
+                    result.success = true;
+                }
             }
             catch
             {
