@@ -19,5 +19,10 @@ namespace MainProject.Controllers
         {
             return Ok(await _userService.createUser(model));
         }
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            return Ok(await _userService.getUsers());
+        }
     }
 }

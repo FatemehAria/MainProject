@@ -7,7 +7,7 @@ namespace Services
     {
         Task<CustomActionResult> createUser(UserModel model);
 
-        Task<List<UserModel>> getUsers();
+        Task<CustomActionResult<List<UserModel>>> getUsers();
 
         Task<UserModel> getUserById();
 
@@ -28,7 +28,10 @@ namespace Services
         {
             return await _repositories.createUser(model);
         }
-
+        public async Task<CustomActionResult<List<UserModel>>> getUsers()
+        {
+            return await _repositories.getUsers();
+        }
         public Task<bool> deleteContactById(int id)
         {
             throw new NotImplementedException();
@@ -44,9 +47,6 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<List<UserModel>> getUsers()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

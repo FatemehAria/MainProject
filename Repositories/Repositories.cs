@@ -7,7 +7,7 @@ namespace Repositories
     {
         Task<CustomActionResult> createUser(UserModel model);
 
-        Task<List<UserModel>> getUsers();
+        Task<CustomActionResult<List<UserModel>>> getUsers();
 
         Task<UserModel> getUserById();
 
@@ -52,6 +52,29 @@ namespace Repositories
             return result;
         }
 
+        public async Task<CustomActionResult<List<UserModel>>> getUsers()
+        {
+            var result = new CustomActionResult<List<UserModel>>();
+            try
+            {
+                var connection = await _dbConnection.connectToDatabase();
+                if (!connection.success) return result;
+                using (connection.data)
+                {
+                    var command = "prc_get_contacts";
+                    result.data = (await connection.data.QueryAsync<UserModel>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
+                    result.message = "";
+                    result.success = true;
+                }
+            }
+            catch
+            {
+                result.message = "error getting users.";
+                result.success = false;
+            }
+            return result;
+        }
+
         public Task<bool> deleteContactById(int id)
         {
             throw new NotImplementedException();
@@ -67,10 +90,6 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<CustomActionResult<List<UserModel>>> getUsers()
-        {
-            var result = new CustomActionResult<List<UserModel>>();
-            return result;
-        }
+
     }
 }
