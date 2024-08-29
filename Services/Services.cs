@@ -1,4 +1,5 @@
 ﻿using Models;
+using Repositories;
 
 namespace Services
 {
@@ -16,6 +17,12 @@ namespace Services
     }
     public class UserService : IUserServices
     {
+        private readonly IUserRepositories _repositories;
+
+        public UserService(IUserRepositories _repos)
+        {
+            _repositories = _repos;
+        }
         public bool createUser(UserModel model)
         {
             throw new NotImplementedException();
