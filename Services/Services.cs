@@ -5,7 +5,7 @@ namespace Services
 {
     public interface IUserServices
     {
-        Task<bool> createUser(UserModel model);
+        Task<CustomActionResult> createUser(UserModel model);
 
         Task<List<UserModel>> getUsers();
 
@@ -24,7 +24,7 @@ namespace Services
             _repositories = _repos;
         }
 
-        public async Task<bool> createUser(UserModel model)
+        public async Task<CustomActionResult> createUser(UserModel model)
         {
             return await _repositories.createUser(model);
         }
