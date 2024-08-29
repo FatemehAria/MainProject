@@ -1,11 +1,12 @@
 ﻿using Dapper;
 using Models;
+using System.Collections.Generic;
 
 namespace Repositories
 {
     public interface IUserLoginRepository
     {
-        Task<CustomActionResult<decimal>> getUserByUsernameAndPassword(UserModel model);
+        Task<CustomActionResult<List<UserModelAfterRegistration>>> getUserByUsernameAndPassword(LoginModel model);
     }
 
     public class UserLoginRepository : IUserLoginRepository
@@ -16,10 +17,10 @@ namespace Repositories
         {
             _dbConnection = dbConnection;
         }
-        public async Task<CustomActionResult<decimal>> getUserByUsernameAndPassword(UserModel model)
+        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUserByUsernameAndPassword(LoginModel model)
         {
 
-            CustomActionResult<decimal> result = new CustomActionResult<decimal>();
+            CustomActionResult<List<UserModelAfterRegistration>> result = new CustomActionResult<List<UserModelAfterRegistration>>();
             try
             {
                 var connection = await _dbConnection.connectToDatabase();
@@ -30,8 +31,8 @@ namespace Repositories
                 parameters.Add(name: "username", value: model.phoneNumber);
                 parameters.Add(name: "password", value: model.password);
 
-                result.data = await connection.data.QueryFirstOrDefaultAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                if (result.data != 0)
+                result.data = (await connection.data.QueryFirstOrDefaultAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure)).ToList();
+                if (result.data.Count > 0)
                 {
                     result.message = "login successful.";
                     result.success = true;
@@ -39,7 +40,7 @@ namespace Repositories
                 else
                 {
                     result.message = "invalid username or password.";
-                    result.success = true;
+                    result.success = false;
                 }
             }
             catch

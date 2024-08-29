@@ -9,6 +9,7 @@ namespace Services
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
+        Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
         Task<UserModel> getUserById();
 
         Task<UserModel> editUser(UserModel model);
@@ -18,10 +19,11 @@ namespace Services
     public class UserService : IUserServices
     {
         private readonly IUserRepositories _repositories;
-
-        public UserService(IUserRepositories _repos)
+        private readonly IUserLoginRepository _userLoginRepo;
+        public UserService(IUserRepositories _repos , IUserLoginRepository userLoginRepo)
         {
             _repositories = _repos;
+            _userLoginRepo = userLoginRepo;
         }
 
         public async Task<CustomActionResult> createUser(UserModel model)
@@ -31,6 +33,11 @@ namespace Services
         public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers()
         {
             return await _repositories.getUsers();
+        }
+
+        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model)
+        {
+            return await _userLoginRepo.getUserByUsernameAndPassword(model);
         }
         public Task<bool> deleteUSerById(int id)
         {

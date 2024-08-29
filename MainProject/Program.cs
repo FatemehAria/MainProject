@@ -21,6 +21,8 @@ builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 
 builder.Services.AddSingleton<IUserRepositories, UserRepository>();
 
+builder.Services.AddSingleton<IUserLoginRepository, UserLoginRepository>();
+
 builder.Services.AddSingleton<IUserServices, UserService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

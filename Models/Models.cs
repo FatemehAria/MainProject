@@ -13,4 +13,11 @@
     {
         public string password { get; set; }
     }
+
+    public class LoginModel
+    {
+        public string phoneNumber { get; set; }
+
+        public string password { get; set; }
+    }
 }

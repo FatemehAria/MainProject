@@ -24,5 +24,11 @@ namespace MainProject.Controllers
         {
             return Ok(await _userService.getUsers());
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginUser(LoginModel model)
+        {
+            return Ok(await _userService.loginUser(model));
+        }
     }
 }
