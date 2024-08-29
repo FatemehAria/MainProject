@@ -5,15 +5,15 @@ namespace Services
 {
     public interface IUserServices
     {
-        bool createUser(UserModel model);
+        Task<bool> createUser(UserModel model);
 
-        List<UserModel> getUsers();
+        Task<List<UserModel>> getUsers();
 
-        UserModel getUserById();
+        Task<UserModel> getUserById();
 
-        UserModel editUser(UserModel model);
+        Task<UserModel> editUser(UserModel model);
 
-        bool deleteContactById(int id);
+        Task<bool> deleteContactById(int id);
     }
     public class UserService : IUserServices
     {
@@ -23,27 +23,28 @@ namespace Services
         {
             _repositories = _repos;
         }
-        public bool createUser(UserModel model)
+
+        public Task<bool> createUser(UserModel model)
         {
             throw new NotImplementedException();
         }
 
-        public bool deleteContactById(int id)
+        public Task<bool> deleteContactById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public UserModel editUser(UserModel model)
+        public Task<UserModel> editUser(UserModel model)
         {
             throw new NotImplementedException();
         }
 
-        public UserModel getUserById()
+        public Task<UserModel> getUserById()
         {
             throw new NotImplementedException();
         }
 
-        public List<UserModel> getUsers()
+        public Task<List<UserModel>> getUsers()
         {
             throw new NotImplementedException();
         }
