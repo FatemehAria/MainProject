@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IUserServices, UserService>();
-
+//builder.Services.AddSingleton<>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
