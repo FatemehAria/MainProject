@@ -14,7 +14,7 @@ namespace MainProject.Controllers
         {
             _userService = userService;
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CreateUser(UserModel model)
         {
             return Ok(await _userService.createUser(model));
