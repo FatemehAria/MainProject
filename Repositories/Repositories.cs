@@ -21,6 +21,7 @@ namespace Repositories
     {
         public async Task<CustomActionResult> createUser(UserModel model)
         {
+            CustomActionResult result = new CustomActionResult();
             try
             {
                 using (var connection = new SqlConnection("server=localhost;database=main_project_db;user=root;password=;"))
@@ -32,12 +33,16 @@ namespace Repositories
                     parameters.Add(name: "phone_number", value: model.phoneNumber);
 
                     await connection.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.Text);
-                    return true;
+                    result.message = "user created.";
+                    result.success = true;
+                    return result;
                 }
             }
             catch
             {
-                return false;
+                result.message = "user creation failed.";
+                result.success = false;
+                return result;
             }
         }
 
