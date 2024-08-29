@@ -1,4 +1,6 @@
-﻿using Models;
+﻿using Dapper;
+using Models;
+using System.Data.SqlClient;
 
 namespace Repositories
 {
@@ -18,7 +20,24 @@ namespace Repositories
     {
         public bool createUser(UserModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var connection = new SqlConnection("server=localhost;database=main_project_db;user=root;password=;"))
+                {
+                    var command = "prc_create_user";
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add(name: "first_name", value: model.firstName);
+                    parameters.Add(name: "last_name", value: model.lastName);
+                    parameters.Add(name: "phone_number", value: model.phoneNumber);
+
+                    connection.Execute(command, parameters, commandType: System.Data.CommandType.Text);
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool deleteContactById(int id)
