@@ -15,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptions();
 builder.Services.Configure<DatabaseConnectionModel>(configuration.GetSection("DatabaseSetting"));
+builder.Services.Configure<JWTConfigModel>(configuration.GetSection("JWT"));
 
 builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 

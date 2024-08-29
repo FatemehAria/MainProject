@@ -8,6 +8,7 @@ namespace Models
 {
     public class JWTConfigModel
     {
-
+        public string Key { get; set; }
+        public int ExpireMinute { get; set; }
     }
 }
