@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Microsoft.Extensions.Options;
+using Models;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,12 @@ namespace Repositories
     public class DatabaseConnection : IDatabaseConnection
     {
         private IDbConnection _connection;
+        private readonly DatabaseConnectionModel _connectionModel;
 
+        public DatabaseConnection(IOptions<DatabaseConnectionModel> options)
+        {
+            _connectionModel = options.Value;
+        }
         public async Task<CustomActionResult<IDbConnection>> connectToDatabase()
         {
             CustomActionResult<IDbConnection> connectionStatus = new CustomActionResult<IDbConnection>();

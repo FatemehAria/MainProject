@@ -1,8 +1,9 @@
+using Models;
 using Repositories;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptions();
+builder.Services.Configure<DatabaseConnectionModel>(configuration.GetSection("DatabaseSetting"));
 
 builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 
