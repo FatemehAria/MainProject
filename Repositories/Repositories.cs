@@ -6,19 +6,20 @@ namespace Repositories
 {
     public interface IUserRepositories
     {
-        bool createUser(UserModel model);
+        Task<bool> createUser(UserModel model);
 
-        List<UserModel> getUsers();
+        Task<List<UserModel>> getUsers();
 
-        UserModel getUserById();
+        Task<UserModel> getUserById();
 
-        UserModel editUser(UserModel model);
+        Task<UserModel> editUser(UserModel model);
 
-        bool deleteContactById(int id);
+        Task<bool> deleteContactById(int id);
+        
     }
     public class UserRepository : IUserRepositories
     {
-        public bool createUser(UserModel model)
+        public async Task<bool> createUser(UserModel model)
         {
             try
             {
@@ -30,7 +31,7 @@ namespace Repositories
                     parameters.Add(name: "last_name", value: model.lastName);
                     parameters.Add(name: "phone_number", value: model.phoneNumber);
 
-                    connection.Execute(command, parameters, commandType: System.Data.CommandType.Text);
+                    await connection.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.Text);
                     return true;
                 }
             }
@@ -40,22 +41,27 @@ namespace Repositories
             }
         }
 
-        public bool deleteContactById(int id)
+        public Task<bool> deleteContactById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public UserModel editUser(UserModel model)
+        public Task<UserModel> editUser(UserModel model)
         {
             throw new NotImplementedException();
         }
 
-        public UserModel getUserById()
+        public Task<UserModel> getUserById()
         {
             throw new NotImplementedException();
         }
 
-        public List<UserModel> getUsers()
+        public Task<List<UserModel>> getUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IUserRepositories.createUser(UserModel model)
         {
             throw new NotImplementedException();
         }
