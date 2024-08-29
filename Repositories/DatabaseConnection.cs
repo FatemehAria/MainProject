@@ -17,13 +17,13 @@ namespace Repositories
     {
         private IDbConnection _connection;
 
-        CustomActionResult<IDbConnection> connectionStatus = new CustomActionResult<IDbConnection>();
 
-        public Task<CustomActionResult<IDbConnection>> connectToDatabase()
+        public async Task<CustomActionResult<IDbConnection>> connectToDatabase()
         {
+            CustomActionResult<IDbConnection> connectionStatus = new CustomActionResult<IDbConnection>();
             try
             {
-                if(_connection == null)
+                if (_connection == null)
                 {
                     _connection = new MySqlConnection("server=localhost;database=main_project_db;user=root;password=;");
                 }
@@ -32,8 +32,11 @@ namespace Repositories
             }
             catch
             {
-
+                connectionStatus.message = "error connecting to database";
+                connectionStatus.success = false;
             }
+
+            return connectionStatus;
         }
     }
 }
