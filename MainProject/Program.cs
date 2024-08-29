@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using Repositories;
 using Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -18,6 +21,19 @@ builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 builder.Services.AddSingleton<IUserRepositories, UserRepository>();
 
 builder.Services.AddSingleton<IUserServices, UserService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JWT:Key").Value)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 var app = builder.Build();
 

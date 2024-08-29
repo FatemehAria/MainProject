@@ -13,7 +13,7 @@ namespace Services
 
         Task<UserModel> editUser(UserModel model);
 
-        Task<bool> deleteContactById(int id);
+        Task<bool> deleteUSerById(int id);
     }
     public class UserService : IUserServices
     {
@@ -32,7 +32,7 @@ namespace Services
         {
             return await _repositories.getUsers();
         }
-        public Task<bool> deleteContactById(int id)
+        public Task<bool> deleteUSerById(int id)
         {
             throw new NotImplementedException();
         }

@@ -13,7 +13,7 @@ namespace Repositories
 
         Task<UserModel> editUser(UserModel model);
 
-        Task<bool> deleteContactById(int id);
+        Task<bool> deleteUSerById(int id);
 
     }
     public class UserRepository : IUserRepositories
@@ -59,13 +59,10 @@ namespace Repositories
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
-                using (connection.data)
-                {
-                    var command = "prc_get_contacts";
-                    result.data = (await connection.data.QueryAsync<UserModel>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
-                    result.message = "";
-                    result.success = true;
-                }
+                var command = "prc_get_contacts";
+                result.data = (await connection.data.QueryAsync<UserModel>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
+                result.message = "";
+                result.success = true;
             }
             catch
             {
@@ -75,7 +72,7 @@ namespace Repositories
             return result;
         }
 
-        public Task<bool> deleteContactById(int id)
+        public Task<bool> deleteUSerById(int id)
         {
             throw new NotImplementedException();
         }
