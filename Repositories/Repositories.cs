@@ -15,7 +15,7 @@ namespace Repositories
         Task<UserModel> editUser(UserModel model);
 
         Task<bool> deleteContactById(int id);
-        
+
     }
     public class UserRepository : IUserRepositories
     {
@@ -35,15 +35,14 @@ namespace Repositories
                     await connection.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.Text);
                     result.message = "user created.";
                     result.success = true;
-                    return result;
                 }
             }
             catch
             {
                 result.message = "user creation failed.";
                 result.success = false;
-                return result;
             }
+            return result;
         }
 
         public Task<bool> deleteContactById(int id)
