@@ -1,3 +1,4 @@
+using Repositories;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IUserServices, UserService>();
-//builder.Services.AddSingleton<>
+builder.Services.AddSingleton<IUserRepositories, UserRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
