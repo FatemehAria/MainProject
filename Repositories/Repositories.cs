@@ -7,7 +7,7 @@ namespace Repositories
     {
         Task<CustomActionResult> createUser(UserModel model);
 
-        Task<CustomActionResult<List<UserModel>>> getUsers();
+        Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
         Task<UserModel> getUserById();
 
@@ -38,6 +38,7 @@ namespace Repositories
                     parameters.Add(name: "first_name", value: model.firstName);
                     parameters.Add(name: "last_name", value: model.lastName);
                     parameters.Add(name: "phone_number", value: model.phoneNumber);
+                    parameters.Add(name: "password", value: model.password);
 
                     await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                     result.message = "user created.";
@@ -52,15 +53,15 @@ namespace Repositories
             return result;
         }
 
-        public async Task<CustomActionResult<List<UserModel>>> getUsers()
+        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers()
         {
-            var result = new CustomActionResult<List<UserModel>>();
+            var result = new CustomActionResult<List<UserModelAfterRegistration>>();
             try
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
-                var command = "prc_get_contacts";
-                result.data = (await connection.data.QueryAsync<UserModel>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
+                var command = "prc_get_users";
+                result.data = (await connection.data.QueryAsync<UserModelAfterRegistration>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
                 result.message = "";
                 result.success = true;
             }

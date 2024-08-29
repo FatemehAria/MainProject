@@ -7,7 +7,7 @@ namespace Services
     {
         Task<CustomActionResult> createUser(UserModel model);
 
-        Task<CustomActionResult<List<UserModel>>> getUsers();
+        Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
         Task<UserModel> getUserById();
 
@@ -28,7 +28,7 @@ namespace Services
         {
             return await _repositories.createUser(model);
         }
-        public async Task<CustomActionResult<List<UserModel>>> getUsers()
+        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers()
         {
             return await _repositories.getUsers();
         }

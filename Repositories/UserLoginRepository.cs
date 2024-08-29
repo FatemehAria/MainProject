@@ -9,7 +9,7 @@ namespace Repositories
 {
     public interface IUserLoginRepository
     {
-        Task<CustomActionResult<decimal>> getUserByUsernameAndPassword(string username,string password)
+        Task<CustomActionResult<decimal>> getUserByUsernameAndPassword(string username, string password);
     }
 
     public class UserLoginRepository : IUserLoginRepository
