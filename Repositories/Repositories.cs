@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Models;
+using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 
 namespace Repositories
@@ -24,7 +25,7 @@ namespace Repositories
             CustomActionResult result = new CustomActionResult();
             try
             {
-                using (var connection = new SqlConnection("server=localhost;database=main_project_db;user=root;password=;"))
+                using (var connection = new MySqlConnection("server=localhost;database=main_project_db;user=root;password=;"))
                 {
                     var command = "prc_create_user";
                     DynamicParameters parameters = new DynamicParameters();
@@ -32,7 +33,7 @@ namespace Repositories
                     parameters.Add(name: "last_name", value: model.lastName);
                     parameters.Add(name: "phone_number", value: model.phoneNumber);
 
-                    await connection.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.Text);
+                    await connection.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                     result.message = "user created.";
                     result.success = true;
                 }
@@ -61,11 +62,6 @@ namespace Repositories
         }
 
         public Task<List<UserModel>> getUsers()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> IUserRepositories.createUser(UserModel model)
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,7 @@ using Services;
 namespace MainProject.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userService;
