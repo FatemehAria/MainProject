@@ -1,7 +1,5 @@
 ﻿using Dapper;
 using Models;
-using MySql.Data.MySqlClient;
-using System.Data.SqlClient;
 
 namespace Repositories
 {
@@ -69,9 +67,10 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<UserModel>> getUsers()
+        public async Task<CustomActionResult<List<UserModel>>> getUsers()
         {
-            throw new NotImplementedException();
+            var result = new CustomActionResult<List<UserModel>>();
+            return result;
         }
     }
 }
