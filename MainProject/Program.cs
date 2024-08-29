@@ -10,8 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IUserServices, UserService>();
+builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
+
 builder.Services.AddSingleton<IUserRepositories, UserRepository>();
+
+builder.Services.AddSingleton<IUserServices, UserService>();
 
 var app = builder.Build();
 
