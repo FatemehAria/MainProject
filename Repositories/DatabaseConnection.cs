@@ -1,4 +1,5 @@
 ﻿using Models;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,7 +21,19 @@ namespace Repositories
 
         public Task<CustomActionResult<IDbConnection>> connectToDatabase()
         {
-            throw new NotImplementedException();
+            try
+            {
+                if(_connection == null)
+                {
+                    _connection = new MySqlConnection("server=localhost;database=main_project_db;user=root;password=;");
+                }
+                connectionStatus.success = true;
+                connectionStatus.message = "connection to database successfull.";
+            }
+            catch
+            {
+
+            }
         }
     }
 }
