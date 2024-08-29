@@ -15,6 +15,9 @@ namespace Repositories
     public class DatabaseConnection : IDatabaseConnection
     {
         private IDbConnection _connection;
+
+        CustomActionResult<IDbConnection> connectionStatus = new CustomActionResult<IDbConnection>();
+
         public Task<CustomActionResult<IDbConnection>> connectToDatabase()
         {
             throw new NotImplementedException();
