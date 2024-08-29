@@ -30,7 +30,7 @@ namespace Repositories
             {
                 if (_connection == null)
                 {
-                    _connection = new MySqlConnection("server=localhost;database=main_project_db;user=root;password=;");
+                    _connection = new MySqlConnection(_connectionModel.connectionString);
                 }
                 connectionStatus.success = true;
                 connectionStatus.data = _connection;
