@@ -24,9 +24,9 @@ namespace Services
             _repositories = _repos;
         }
 
-        public Task<bool> createUser(UserModel model)
+        public async Task<bool> createUser(UserModel model)
         {
-            throw new NotImplementedException();
+            return await _repositories.createUser(model);
         }
 
         public Task<bool> deleteContactById(int id)
