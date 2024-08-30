@@ -48,7 +48,7 @@ namespace Services
 
             if (checkResult.success)
             {
-                SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(JWTConfigModel.Key));
+                SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
 
                 SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
 
@@ -57,7 +57,7 @@ namespace Services
                     {
          new("UserId", checkUserResult.data.ToString()),
                     },
-                    expires: DateTime.Now.AddMinutes(JWTConfigModel.ExpireMinute),
+                    expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
                     signingCredentials: signingCredentials
                 );
             }
