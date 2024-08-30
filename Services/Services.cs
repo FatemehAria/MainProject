@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using Repositories;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,11 +26,11 @@ namespace Services
         private readonly IUserRepositories _repositories;
         private readonly IUserLoginRepository _userLoginRepo;
         private readonly JWTConfigModel _jwtConfigModel;
-        public UserService(IUserRepositories _repos, IUserLoginRepository userLoginRepo, JWTConfigModel jwtConfig)
+        public UserService(IUserRepositories _repos, IUserLoginRepository userLoginRepo, IOptions<JWTConfigModel> jwtConfig)
         {
             _repositories = _repos;
             _userLoginRepo = userLoginRepo;
-            _jwtConfigModel = jwtConfig;
+            _jwtConfigModel = jwtConfig.Value;
         }
 
         public async Task<CustomActionResult> createUser(UserModel model)
