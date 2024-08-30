@@ -73,9 +73,29 @@ namespace Repositories
             return result;
         }
 
-        public Task<bool> deleteUSerById(int id)
+        public async Task<bool> deleteUSerById(int id)
         {
-            throw new NotImplementedException();
+            CustomActionResult result = new CustomActionResult();
+            try
+            {
+                var connection = await _dbConnection.connectToDatabase();
+                if (!connection.success) return result.success;
+                using (connection.data)
+                {
+                    var command = "prc_delete_user";
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add(name: "id", value: id);
+                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                    result.message = "user deleted.";
+                    result.success = true;
+                }
+            }
+            catch
+            {
+                result.message = "user deletion failed.";
+                result.success = false;
+            }
+            return result.success;
         }
 
         public Task<UserModel> editUser(UserModel model)
