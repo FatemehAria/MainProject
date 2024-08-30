@@ -34,6 +34,12 @@ namespace MainProject.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> EditUser(UserModelAfterRegistration model)
+        {
+            return Ok(await _userService.editUser(model));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> DeleteUserById(int id)
         {
             return Ok(await _userService.deleteUserById(id));

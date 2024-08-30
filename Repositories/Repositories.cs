@@ -11,7 +11,7 @@ namespace Repositories
 
         Task<UserModel> getUserById();
 
-        Task<UserModel> editUser(UserModel model);
+        Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model);
 
         Task<bool> deleteUserById(int id);
 
@@ -98,13 +98,38 @@ namespace Repositories
             return result.success;
         }
 
-        public Task<UserModel> editUser(UserModel model)
+        public async Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model)
         {
-            throw new NotImplementedException();
+            CustomActionResult<UserModelAfterRegistration> result = new CustomActionResult<UserModelAfterRegistration>();
+            try
+            {
+                var connection = await _dbConnection.connectToDatabase();
+                if (!connection.success) return result.data;
+                using (connection.data)
+                {
+                    var command = "prc_edit_user";
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add(name: "user_id", value: model.userId);
+                    parameters.Add(name: "new_first_name", value: model.firstName);
+                    parameters.Add(name: "new_last_name", value: model.lastName);
+                    parameters.Add(name: "new_phone_number", value: model.phoneNumber);
+
+                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                    result.message = "user modified.";
+                    result.success = true;
+                }
+            }
+            catch
+            {
+                result.message = "user modification failed.";
+                result.success = false;
+            }
+            return result.data;
         }
 
         public Task<UserModel> getUserById()
         {
+            CustomActionResult result = new CustomActionResult();
             throw new NotImplementedException();
         }
 

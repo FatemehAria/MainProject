@@ -17,7 +17,7 @@ namespace Services
         Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
         Task<UserModel> getUserById();
 
-        Task<UserModel> editUser(UserModel model);
+        Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model);
 
         Task<bool> deleteUserById(int id);
 
@@ -56,9 +56,9 @@ namespace Services
             return await _repositories.deleteUserById(id);
         }
 
-        public Task<UserModel> editUser(UserModel model)
+        public async Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model)
         {
-            throw new NotImplementedException();
+            return await _repositories.editUser(model);
         }
 
         public Task<UserModel> getUserById()
