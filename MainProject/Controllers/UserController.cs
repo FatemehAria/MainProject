@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -6,6 +7,7 @@ namespace MainProject.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userService;
