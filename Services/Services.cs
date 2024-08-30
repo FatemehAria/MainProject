@@ -20,6 +20,8 @@ namespace Services
         Task<UserModel> editUser(UserModel model);
 
         Task<bool> deleteUSerById(int id);
+
+        string generateToken(CustomActionResult<List<UserModelAfterRegistration>> userData);
     }
     public class UserService : IUserServices
     {
@@ -44,27 +46,8 @@ namespace Services
 
         public async Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model)
         {
-            CustomActionResult<string> result = new CustomActionResult<string>();
+
             var checkResult = await _userLoginRepo.getUserByUsernameAndPassword(model);
-            result.success = checkResult.success;
-            if (!result.success) return checkResult;
-
-            SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
-
-            SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
-
-            JwtSecurityToken tokenOptions = new(
-                claims: new List<Claim>
-                {
-                     new("UserId", checkResult.data.ToString()),
-                },
-                expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
-                signingCredentials: signingCredentials
-            );
-            result.success = true;
-            result.data = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            checkResult.data.Add(result.data);
-            result.message = "";
 
             return checkResult;
         }
@@ -83,6 +66,22 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public string generateToken(CustomActionResult<List<UserModelAfterRegistration>> userData)
+        {
+            SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
 
+            SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityToken tokenOptions = new(
+                claims: new List<Claim>
+                {
+                     new("UserId", userData.ToString()),
+                },
+                expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
+                signingCredentials: signingCredentials
+            );
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return token;
+        }
     }
 }

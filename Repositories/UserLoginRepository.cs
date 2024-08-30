@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using Models;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Text;
 
 namespace Repositories
 {
@@ -36,6 +38,7 @@ namespace Repositories
 
                 if (user != null)
                 {
+                    
                     result.data.Add(user);
                     result.message = "login successful.";
                     result.success = true;
