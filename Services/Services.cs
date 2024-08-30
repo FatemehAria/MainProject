@@ -63,9 +63,10 @@ namespace Services
             );
             result.success = true;
             result.data = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            checkResult.data.Add(result.data);
             result.message = "";
 
-            return result;
+            return checkResult;
         }
         public Task<bool> deleteUSerById(int id)
         {

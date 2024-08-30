@@ -8,6 +8,8 @@
         public string lastName { get; set; }
 
         public string phoneNumber { get; set; }
+
+        public string token { get; set; }
     }
     public class UserModel : UserModelAfterRegistration
     {
