@@ -36,7 +36,7 @@ function Login() {
       <FormInput
         value={loginInfo.password}
         label="رمز عبور"
-        type="text"
+        type="password"
         name="password"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setLoginInfo((last) => ({ ...last, password: e.target.value }))
