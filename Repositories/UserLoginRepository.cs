@@ -14,7 +14,6 @@ namespace Repositories
     public class UserLoginRepository : IUserLoginRepository
     {
         private readonly IDatabaseConnection _dbConnection;
-
         public UserLoginRepository(IDatabaseConnection dbConnection)
         {
             _dbConnection = dbConnection;
@@ -35,7 +34,7 @@ namespace Repositories
                 parameters.Add(name: "password", value: model.password);
 
                 var user = await connection.data.QueryFirstOrDefaultAsync<UserModelAfterRegistration>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-
+                
                 if (user != null)
                 {
                     
