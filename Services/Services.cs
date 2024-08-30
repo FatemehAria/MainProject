@@ -14,7 +14,7 @@ namespace Services
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
-        Task<CustomActionResult<string>> loginUser(LoginModel model);
+        Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
         Task<UserModel> getUserById();
 
         Task<UserModel> editUser(UserModel model);
@@ -42,12 +42,12 @@ namespace Services
             return await _repositories.getUsers();
         }
 
-        public async Task<CustomActionResult<string>> loginUser(LoginModel model)
+        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model)
         {
-            var checkResult = await _userLoginRepo.getUserByUsernameAndPassword(model);
             CustomActionResult<string> result = new CustomActionResult<string>();
+            var checkResult = await _userLoginRepo.getUserByUsernameAndPassword(model);
             result.success = checkResult.success;
-            if (!result.success) return result;
+            if (!result.success) return checkResult;
 
             SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
 
