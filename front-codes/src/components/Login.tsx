@@ -1,10 +1,11 @@
 import FormInput from "./FormInput";
 import SubmissionBtn from "./SubmissionButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import app from "../service/service";
 import { useState } from "react";
 
 function Login() {
+  const navigation = useNavigate();
   const [loginInfo, setLoginInfo] = useState({
     phoneNumber: "",
     password: "",
@@ -17,6 +18,7 @@ function Login() {
         password: loginInfo.password,
       });
       console.log(data);
+      navigation("/users")
     } catch (error) {
       console.log(error);
     }
