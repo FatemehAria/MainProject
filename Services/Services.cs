@@ -25,7 +25,7 @@ namespace Services
         private readonly IUserRepositories _repositories;
         private readonly IUserLoginRepository _userLoginRepo;
         private readonly JWTConfigModel _jwtConfigModel;
-        public UserService(IUserRepositories _repos , IUserLoginRepository userLoginRepo, JWTConfigModel jwtConfig)
+        public UserService(IUserRepositories _repos, IUserLoginRepository userLoginRepo, JWTConfigModel jwtConfig)
         {
             _repositories = _repos;
             _userLoginRepo = userLoginRepo;
@@ -44,23 +44,21 @@ namespace Services
         public async Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model)
         {
             var checkResult = await _userLoginRepo.getUserByUsernameAndPassword(model);
-            
+            if (!checkResult.success) return checkResult;
+            SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
 
-            if (checkResult.success)
-            {
-                SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
+            SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
 
-                SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
+            JwtSecurityToken tokenOptions = new(
+                claims: new List<Claim>
+                {
+                     new("UserId", checkResult.data.ToString()),
+                },
+                expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
+                signingCredentials: signingCredentials
+            );
 
-                JwtSecurityToken tokenOptions = new(
-                    claims: new List<Claim>
-                    {
-         new("UserId", checkUserResult.data.ToString()),
-                    },
-                    expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
-                    signingCredentials: signingCredentials
-                );
-            }
+
             return checkResult;
         }
         public Task<bool> deleteUSerById(int id)
@@ -78,6 +76,6 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        
+
     }
 }
