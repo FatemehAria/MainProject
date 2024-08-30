@@ -14,7 +14,7 @@ namespace Services
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
-        Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
+        Task<CustomActionResult<string>> loginUser(LoginModel model);
         Task<UserModel> getUserById();
 
         Task<UserModel> editUser(UserModel model);
@@ -42,10 +42,13 @@ namespace Services
             return await _repositories.getUsers();
         }
 
-        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model)
+        public async Task<CustomActionResult<string>> loginUser(LoginModel model)
         {
             var checkResult = await _userLoginRepo.getUserByUsernameAndPassword(model);
-            if (!checkResult.success) return checkResult;
+            CustomActionResult<string> result = new CustomActionResult<string>();
+            result.success = checkResult.success;
+            if (!result.success) return result;
+
             SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
 
             SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
@@ -58,9 +61,11 @@ namespace Services
                 expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
                 signingCredentials: signingCredentials
             );
+            result.success = true;
+            result.data = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            result.message = "";
 
-
-            return checkResult;
+            return result;
         }
         public Task<bool> deleteUSerById(int id)
         {
