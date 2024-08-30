@@ -15,6 +15,7 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
 ]);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />

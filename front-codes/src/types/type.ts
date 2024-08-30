@@ -1,13 +1,11 @@
 export type FormInputProps = {
   label?: string;
   placeholder?: string;
-  type?: string;
+  type: string;
   pattern?: string;
   name?: string;
-  onChange?: any;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
   value: string;
-  onBlur?: any;
-  autoFocus?: boolean;
 };
 export type SubmissionBtnProps = {
   text: string;

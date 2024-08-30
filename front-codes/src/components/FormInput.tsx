@@ -3,9 +3,7 @@ import { FormInputProps } from "../types/type";
 function FormInput({
   label,
   value,
-  autoFocus,
   name,
-  onBlur,
   onChange,
   pattern,
   placeholder,
@@ -21,13 +19,11 @@ function FormInput({
         placeholder={placeholder}
         type={type}
         onChange={onChange}
-        maxLength={length}
         value={value}
         autoComplete="off"
         pattern={pattern}
         name={name}
-        onBlur={onBlur}
-        autoFocus={autoFocus}
+        autoFocus={true}
       />
     </div>
   );

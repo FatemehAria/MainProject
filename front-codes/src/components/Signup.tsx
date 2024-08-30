@@ -15,7 +15,6 @@ function Signup() {
         type="tel"
         name="phoneNumber"
       />
-
       <SubmissionBtn text="ثبت نام" />
     </form>
   );
