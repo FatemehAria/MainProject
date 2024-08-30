@@ -32,5 +32,11 @@ namespace MainProject.Controllers
         {
             return Ok(await _userService.loginUser(model));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUserById(int id)
+        {
+            return Ok(await _userService.deleteUserById(id));
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace Services
 
         Task<UserModel> editUser(UserModel model);
 
-        Task<bool> deleteUSerById(int id);
+        Task<bool> deleteUserById(int id);
 
       
     }
@@ -51,9 +51,9 @@ namespace Services
 
             return checkResult;
         }
-        public Task<bool> deleteUSerById(int id)
+        public async Task<bool> deleteUserById(int id)
         {
-            throw new NotImplementedException();
+            return await _repositories.deleteUserById(id);
         }
 
         public Task<UserModel> editUser(UserModel model)

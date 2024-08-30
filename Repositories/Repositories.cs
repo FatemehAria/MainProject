@@ -13,7 +13,7 @@ namespace Repositories
 
         Task<UserModel> editUser(UserModel model);
 
-        Task<bool> deleteUSerById(int id);
+        Task<bool> deleteUserById(int id);
 
     }
     public class UserRepository : IUserRepositories
@@ -73,7 +73,7 @@ namespace Repositories
             return result;
         }
 
-        public async Task<bool> deleteUSerById(int id)
+        public async Task<bool> deleteUserById(int id)
         {
             CustomActionResult result = new CustomActionResult();
             try
