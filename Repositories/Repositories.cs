@@ -9,8 +9,6 @@ namespace Repositories
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
-        Task<UserModel> getUserById();
-
         Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model);
 
         Task<bool> deleteUserById(int id);
@@ -126,13 +124,5 @@ namespace Repositories
             }
             return result.data;
         }
-
-        public Task<UserModel> getUserById()
-        {
-            CustomActionResult result = new CustomActionResult();
-            throw new NotImplementedException();
-        }
-
-
     }
 }

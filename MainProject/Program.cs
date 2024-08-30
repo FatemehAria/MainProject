@@ -7,6 +7,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+var originsToAllow = "_originsToAllow";
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -38,6 +39,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: originsToAllow,
+                      policy =>
+                      {
+                          policy.WithOrigins("*");
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,6 +58,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(originsToAllow);
 
 app.UseAuthentication();
 app.UseAuthorization();

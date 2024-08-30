@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Models;
+﻿using Models;
 using Repositories;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace Services
 {
@@ -15,7 +10,6 @@ namespace Services
         Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
-        Task<UserModel> getUserById();
 
         Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model);
 
@@ -60,12 +54,5 @@ namespace Services
         {
             return await _repositories.editUser(model);
         }
-
-        public Task<UserModel> getUserById()
-        {
-            throw new NotImplementedException();
-        }
-
-        
     }
 }
