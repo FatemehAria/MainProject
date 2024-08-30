@@ -2,8 +2,10 @@ import { useState } from "react";
 import FormInput from "./FormInput";
 import SubmissionBtn from "./SubmissionButton";
 import app from "../service/service";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigation = useNavigate();
   const [signupInfo, setSignupInfo] = useState({
     firstName: "",
     lastName: "",
@@ -22,6 +24,7 @@ function Signup() {
         token: "",
       });
       console.log(data);
+      navigation("/");
     } catch (error) {
       console.log(error);
     }
