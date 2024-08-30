@@ -19,8 +19,9 @@ namespace Repositories
         }
         public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUserByUsernameAndPassword(LoginModel model)
         {
-
             CustomActionResult<List<UserModelAfterRegistration>> result = new CustomActionResult<List<UserModelAfterRegistration>>();
+            result.data = new List<UserModelAfterRegistration>();
+
             try
             {
                 var connection = await _dbConnection.connectToDatabase();
@@ -28,12 +29,14 @@ namespace Repositories
 
                 var command = "prc_login_user";
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add(name: "username", value: model.phoneNumber);
-                parameters.Add(name: "password", value: model.password);
+                parameters.Add(name: "@username", value: model.phoneNumber);
+                parameters.Add(name: "@password", value: model.password);
 
-                result.data = (await connection.data.QueryFirstOrDefaultAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure)).ToList();
-                if (result.data.Count > 0)
+                var user = await connection.data.QueryFirstOrDefaultAsync<UserModelAfterRegistration>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                if (user != null)
                 {
+                    result.data.Add(user);
                     result.message = "login successful.";
                     result.success = true;
                 }
@@ -43,11 +46,13 @@ namespace Repositories
                     result.success = false;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                //Console.WriteLine($"Exception occurred: {ex.Message}");
                 result.message = "login failed.";
                 result.success = false;
             }
+
             return result;
         }
     }
