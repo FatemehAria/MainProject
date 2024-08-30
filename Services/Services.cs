@@ -21,18 +21,18 @@ namespace Services
 
         Task<bool> deleteUSerById(int id);
 
-        string generateToken(CustomActionResult<List<UserModelAfterRegistration>> userData);
+      
     }
     public class UserService : IUserServices
     {
         private readonly IUserRepositories _repositories;
         private readonly IUserLoginRepository _userLoginRepo;
-        private readonly JWTConfigModel _jwtConfigModel;
-        public UserService(IUserRepositories _repos, IUserLoginRepository userLoginRepo, IOptions<JWTConfigModel> jwtConfig)
+
+        public UserService(IUserRepositories _repos, IUserLoginRepository userLoginRepo)
         {
             _repositories = _repos;
             _userLoginRepo = userLoginRepo;
-            _jwtConfigModel = jwtConfig.Value;
+           
         }
 
         public async Task<CustomActionResult> createUser(UserModel model)
@@ -66,22 +66,6 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public string generateToken(CustomActionResult<List<UserModelAfterRegistration>> userData)
-        {
-            SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
-
-            SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
-
-            JwtSecurityToken tokenOptions = new(
-                claims: new List<Claim>
-                {
-                     new("UserId", userData.ToString()),
-                },
-                expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
-                signingCredentials: signingCredentials
-            );
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return token;
-        }
+        
     }
 }

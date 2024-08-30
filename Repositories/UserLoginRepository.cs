@@ -1,6 +1,9 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -9,14 +12,35 @@ namespace Repositories
     public interface IUserLoginRepository
     {
         Task<CustomActionResult<List<UserModelAfterRegistration>>> getUserByUsernameAndPassword(LoginModel model);
+
+        string generateToken(CustomActionResult<List<UserModelAfterRegistration>> userData);
     }
 
     public class UserLoginRepository : IUserLoginRepository
     {
         private readonly IDatabaseConnection _dbConnection;
-        public UserLoginRepository(IDatabaseConnection dbConnection)
+        private readonly JWTConfigModel _jwtConfigModel;
+        public UserLoginRepository(IDatabaseConnection dbConnection, IOptions<JWTConfigModel> jwtConfig)
         {
             _dbConnection = dbConnection;
+            _jwtConfigModel = jwtConfig.Value;
+        }
+        public string generateToken(CustomActionResult<List<UserModelAfterRegistration>> userData)
+        {
+            SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(_jwtConfigModel.Key));
+
+            SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityToken tokenOptions = new(
+                claims: new List<Claim>
+                {
+                     new("UserId", userData.ToString()),
+                },
+                expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
+                signingCredentials: signingCredentials
+            );
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return token;
         }
         public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUserByUsernameAndPassword(LoginModel model)
         {
