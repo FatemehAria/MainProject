@@ -1,5 +1,9 @@
-﻿using Models;
+﻿using Microsoft.IdentityModel.Tokens;
+using Models;
 using Repositories;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Services
 {
@@ -20,10 +24,12 @@ namespace Services
     {
         private readonly IUserRepositories _repositories;
         private readonly IUserLoginRepository _userLoginRepo;
-        public UserService(IUserRepositories _repos , IUserLoginRepository userLoginRepo)
+        private readonly JWTConfigModel _jwtConfigModel;
+        public UserService(IUserRepositories _repos , IUserLoginRepository userLoginRepo, JWTConfigModel jwtConfig)
         {
             _repositories = _repos;
             _userLoginRepo = userLoginRepo;
+            _jwtConfigModel = jwtConfig;
         }
 
         public async Task<CustomActionResult> createUser(UserModel model)
@@ -37,7 +43,25 @@ namespace Services
 
         public async Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model)
         {
-            return await _userLoginRepo.getUserByUsernameAndPassword(model);
+            var checkResult = await _userLoginRepo.getUserByUsernameAndPassword(model);
+            
+
+            if (checkResult.success)
+            {
+                SymmetricSecurityKey secrectKey = new(Encoding.UTF8.GetBytes(JWTConfigModel.Key));
+
+                SigningCredentials signingCredentials = new(secrectKey, SecurityAlgorithms.HmacSha256);
+
+                JwtSecurityToken tokenOptions = new(
+                    claims: new List<Claim>
+                    {
+         new("UserId", checkUserResult.data.ToString()),
+                    },
+                    expires: DateTime.Now.AddMinutes(JWTConfigModel.ExpireMinute),
+                    signingCredentials: signingCredentials
+                );
+            }
+            return checkResult;
         }
         public Task<bool> deleteUSerById(int id)
         {

@@ -29,8 +29,8 @@ namespace Repositories
 
                 var command = "prc_login_user";
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add(name: "@username", value: model.phoneNumber);
-                parameters.Add(name: "@password", value: model.password);
+                parameters.Add(name: "username", value: model.phoneNumber);
+                parameters.Add(name: "password", value: model.password);
 
                 var user = await connection.data.QueryFirstOrDefaultAsync<UserModelAfterRegistration>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
 
