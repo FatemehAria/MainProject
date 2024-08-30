@@ -9,3 +9,8 @@ export type FormInputProps = {
   onBlur?: any;
   autoFocus?: boolean;
 };
+export type SubmissionBtnProps = {
+  text: string;
+  // validation?: boolean;
+  type?: "submit" | "button" | "reset" | undefined;
+};

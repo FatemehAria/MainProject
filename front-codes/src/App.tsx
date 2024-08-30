@@ -1,4 +1,5 @@
 import FormInput from "./components/FormInput";
+import SubmissionBtn from "./components/SubmissionButton";
 
 function App() {
   return (
@@ -9,8 +10,10 @@ function App() {
           value={""}
           label="شماره تماس"
           type="tel"
-          name="PhoneNumber"
+          name="phoneNumber"
         />
+        <FormInput value={""} label="رمز عبور" type="tel" name="phoneNumber" />
+        <SubmissionBtn text="ورود" />
       </form>
     </div>
   );

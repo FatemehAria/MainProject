@@ -13,10 +13,7 @@ function FormInput({
 }: FormInputProps) {
   return (
     <div className="relative">
-      <label
-        className="absolute -top-3 right-4 z-10 lg:text-[16px] lg:px-2 px-2
-          bg-white text-[#4866CF]"
-      >
+      <label className="absolute -top-3 right-4 z-10 lg:text-[16px] lg:px-2 px-2 bg-white text-[#000000]">
         {label}
       </label>
       <input
