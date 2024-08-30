@@ -8,6 +8,8 @@
         public string lastName { get; set; }
 
         public string phoneNumber { get; set; }
+
+        public string token { get; set; }
     }
     public class UserModel : UserModelAfterRegistration
     {
@@ -21,8 +23,4 @@
         public string password { get; set; }
     }
 
-    public class LoggedInUser : UserModelAfterRegistration
-    {
-        public string token { get; set; }
-    }
 }

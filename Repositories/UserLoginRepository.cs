@@ -34,7 +34,7 @@ namespace Repositories
             JwtSecurityToken tokenOptions = new(
                 claims: new List<Claim>
                 {
-                     new("UserId", userData.ToString()),
+                     new("UserId", userData.data.ToString()),
                 },
                 expires: DateTime.Now.AddMinutes(_jwtConfigModel.ExpireMinute),
                 signingCredentials: signingCredentials
@@ -61,8 +61,14 @@ namespace Repositories
                 
                 if (user != null)
                 {
-                    
-                    result.data.Add(user);
+                    string token = generateToken(result);
+                    var userModelIn = new UserModelAfterRegistration();
+                    userModelIn.userId = user.userId;
+                    userModelIn.firstName = user.firstName;
+                    userModelIn.lastName = user.lastName;
+                    userModelIn.phoneNumber = user.phoneNumber;
+                    userModelIn.token = token;
+                    result.data.Add(userModelIn);
                     result.message = "login successful.";
                     result.success = true;
                 }
