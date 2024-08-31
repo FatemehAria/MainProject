@@ -13,15 +13,14 @@ function Users() {
 
   const handleToDelete = async (userId: number) => {
     try {
-      const { data } = await app.post("/User/DeleteUserById", {
-        user_id: userId,
-      });
+      const { data } = await app.post("/User/DeleteUserById", userId);
       if (data.success) {
         setAllUsers((prevUsers) =>
           prevUsers.filter((user: { userId: number }) => user.userId !== userId)
         );
         toast.success("کاربر با موفقیت حذف شد.");
       }
+      console.log("delete", data);
     } catch (error) {
       toast.error("خطا در حذف کاربر.");
       console.log(error);
