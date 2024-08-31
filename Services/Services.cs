@@ -11,7 +11,7 @@ namespace Services
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
 
-        Task<UserInfoModel> editUser(UserModel model);
+        Task<CustomActionResult<List<UserInfoModel>>> editUser(UserModel model);
 
         Task<CustomActionResult<bool>> deleteUserById(int id);
 
@@ -50,7 +50,7 @@ namespace Services
             return await _repositories.deleteUserById(id);
         }
 
-        public async Task<UserInfoModel> editUser(UserModel model)
+        public async Task<CustomActionResult<List<UserInfoModel>>> editUser(UserModel model)
         {
             return await _repositories.editUser(model);
         }
