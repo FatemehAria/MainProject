@@ -11,7 +11,7 @@ namespace Repositories
 
         Task<CustomActionResult<List<UserInfoModel>>> editUser(UserModel model);
 
-        Task<CustomActionResult<bool>> deleteUserById(int id);
+        Task<CustomActionResult<bool>> deleteUserById(int user_id);
 
     }
     public class UserRepository : IUserRepositories
@@ -69,7 +69,7 @@ namespace Repositories
             return result;
         }
 
-        public async Task<CustomActionResult<bool>> deleteUserById(int id)
+        public async Task<CustomActionResult<bool>> deleteUserById(int user_id)
         {
             CustomActionResult<bool> result = new CustomActionResult<bool>();
             try
@@ -78,7 +78,7 @@ namespace Repositories
                 if (!connection.success) return result;
                 var command = "prc_delete_user";
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add(name: "user_id", value: id);
+                parameters.Add(name: "@user_id", value: user_id);
                 await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                 result.message = "user deleted.";
                 result.success = true;

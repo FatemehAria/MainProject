@@ -13,7 +13,7 @@ namespace Services
 
         Task<CustomActionResult<List<UserInfoModel>>> editUser(UserModel model);
 
-        Task<CustomActionResult<bool>> deleteUserById(int id);
+        Task<CustomActionResult<bool>> deleteUserById(int user_id);
 
       
     }
@@ -45,9 +45,9 @@ namespace Services
 
             return checkResult;
         }
-        public async Task<CustomActionResult<bool>> deleteUserById(int id)
+        public async Task<CustomActionResult<bool>> deleteUserById(int user_id)
         {
-            return await _repositories.deleteUserById(id);
+            return await _repositories.deleteUserById(user_id);
         }
 
         public async Task<CustomActionResult<List<UserInfoModel>>> editUser(UserModel model)
