@@ -29,19 +29,17 @@ namespace Repositories
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
-                using (connection.data)
-                {
-                    var command = "prc_create_user";
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add(name: "first_name", value: model.firstName);
-                    parameters.Add(name: "last_name", value: model.lastName);
-                    parameters.Add(name: "phone_number", value: model.phoneNumber);
-                    parameters.Add(name: "password", value: model.password);
+                var command = "prc_create_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "first_name", value: model.firstName);
+                parameters.Add(name: "last_name", value: model.lastName);
+                parameters.Add(name: "phone_number", value: model.phoneNumber);
+                parameters.Add(name: "password", value: model.password);
 
-                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                    result.message = "user created.";
-                    result.success = true;
-                }
+                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result.message = "user created.";
+                result.success = true;
+
             }
             catch
             {
