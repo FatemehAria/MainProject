@@ -10,6 +10,7 @@ function Users() {
     show: false,
     userId: "",
   });
+  const [userIsDeleted, setUserIsDeleted] = useState(false);
 
   const deleteUser = async (userId: number) => {
     try {
@@ -18,9 +19,11 @@ function Users() {
       });
       toast.success("کاربر با موفقیت حذف شد.");
       console.log(data);
+      setUserIsDeleted(true);
     } catch (error) {
       toast.error("خطا در حذف کاربر.");
       console.log(error);
+      setUserIsDeleted(false);
     }
   };
 
@@ -66,6 +69,10 @@ function Users() {
               className={`grid grid-cols-5 justify-center items-center ${
                 item.userId === +showEditForm.userId
                   ? "bg-yellow-400 rounded-lg py-2 text-white text-lg"
+                  : ""
+              } ${
+                userIsDeleted
+                  ? "bg-red-400 rounded-lg py-2 text-white text-lg"
                   : ""
               }`}
             >
