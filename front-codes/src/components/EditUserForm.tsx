@@ -3,7 +3,18 @@ import FormInput from "./FormInput";
 import SubmissionBtn from "./SubmissionButton";
 import app from "../service/service";
 
-function EditUserForm({ userId }: { userId: number }) {
+function EditUserForm({
+  userId,
+  setShowForm,
+}: {
+  userId: number;
+  setShowForm: React.Dispatch<
+    React.SetStateAction<{
+      show: boolean;
+      userId: string;
+    }>
+  >;
+}) {
   const [editInfo, setEditInfo] = useState({
     firstName: "",
     lastName: "",
@@ -21,6 +32,7 @@ function EditUserForm({ userId }: { userId: number }) {
         password: editInfo.password,
       });
       console.log(data);
+      setShowForm((last) => ({ ...last, show: false }));
     } catch (error) {
       console.log(error);
     }
