@@ -5,7 +5,7 @@ import { getUsers } from "../utils/util";
 import toast from "react-hot-toast";
 
 function Users() {
-  const [allUsers, setAllUsers] = useState<any>([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [showEditForm, setShowEditForm] = useState({
     show: false,
     userId: "",
@@ -14,13 +14,11 @@ function Users() {
   const handleToDelete = async (userId: number) => {
     try {
       const { data } = await app.post("/User/DeleteUserById", {
-        userId,
+        user_id: userId,
       });
       if (data.success) {
-        setAllUsers((prevUsers:any) =>
-          prevUsers.map((user:any) =>
-            user.userId === userId ? { ...user, isDeleted: true } : user
-          )
+        setAllUsers((prevUsers) =>
+          prevUsers.filter((user: { userId: number }) => user.userId !== userId)
         );
         toast.success("کاربر با موفقیت حذف شد.");
       }
@@ -29,6 +27,7 @@ function Users() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getUsers(setAllUsers);
   }, [showEditForm.show]);
@@ -63,7 +62,6 @@ function Users() {
               firstName: string;
               lastName: string;
               phoneNumber: string;
-              isDeleted?: boolean; // این پراپرتی جدید اضافه شده است
             },
             index
           ) => (
@@ -72,10 +70,6 @@ function Users() {
               className={`grid grid-cols-5 justify-center items-center ${
                 item.userId === +showEditForm.userId
                   ? "bg-yellow-400 rounded-lg py-2 text-white text-lg"
-                  : ""
-              } ${
-                item.isDeleted
-                  ? "bg-red-400 rounded-lg py-2 text-white text-lg"
                   : ""
               }`}
             >
@@ -87,7 +81,6 @@ function Users() {
                 <button
                   className="bg-red-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
                   onClick={() => handleToDelete(item.userId)}
-                  disabled={item.isDeleted}
                 >
                   حذف کاربر
                 </button>
@@ -99,7 +92,6 @@ function Users() {
                       userId: item.userId.toString(),
                     })
                   }
-                  disabled={item.isDeleted}
                 >
                   ویرایش کاربر
                 </button>
@@ -111,4 +103,5 @@ function Users() {
     </div>
   );
 }
+
 export default Users;
