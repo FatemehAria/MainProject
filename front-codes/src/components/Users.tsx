@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import app from "../service/service";
 import EditUserForm from "./EditUserForm";
+import { getUsers } from "../utils/util";
 
 function Users() {
   const [allUsers, setAllUsers] = useState([]);
@@ -8,16 +9,6 @@ function Users() {
     show: false,
     userId: "",
   });
-
-  const getUsers = async () => {
-    try {
-      const { data } = await app("/User/GetUsers");
-      console.log(data);
-      setAllUsers(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const deleteUser = async (userId: number) => {
     try {
@@ -29,8 +20,9 @@ function Users() {
       console.log(error);
     }
   };
+  
   useEffect(() => {
-    getUsers();
+    getUsers(setAllUsers);
   }, []);
   return (
     <div className="text-center">

@@ -8,6 +8,7 @@ function FormInput({
   pattern,
   placeholder,
   type,
+  autoFocus
 }: FormInputProps) {
   return (
     <div className="relative">
@@ -15,7 +16,7 @@ function FormInput({
         {label}
       </label>
       <input
-        className="border-[0.3px] border-indigo-500 text-[#4866CF] mx-auto outline-none rounded-md px-2 py-2 text-lg w-full "
+        className="border-[0.3px] border-indigo-500 text-[#000000] mx-auto outline-none rounded-md px-2 py-2 text-lg w-full "
         placeholder={placeholder}
         type={type}
         onChange={onChange}
@@ -23,7 +24,7 @@ function FormInput({
         autoComplete="off"
         pattern={pattern}
         name={name}
-        autoFocus={true}
+        autoFocus={autoFocus}
       />
     </div>
   );

@@ -48,6 +48,7 @@ function EditUserForm({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setEditInfo((last) => ({ ...last, firstName: e.target.value }))
         }
+        autoFocus={true}
       />
       <FormInput
         value={editInfo.lastName}
@@ -57,6 +58,7 @@ function EditUserForm({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setEditInfo((last) => ({ ...last, lastName: e.target.value }))
         }
+        autoFocus={false}
       />
       <FormInput
         value={editInfo.phoneNumber}
@@ -66,6 +68,7 @@ function EditUserForm({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setEditInfo((last) => ({ ...last, phoneNumber: e.target.value }))
         }
+        autoFocus={false}
       />
       <FormInput
         value={editInfo.password}
@@ -75,6 +78,7 @@ function EditUserForm({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setEditInfo((last) => ({ ...last, password: e.target.value }))
         }
+        autoFocus={false}
       />
       <SubmissionBtn text="ویرایش" />
     </form>

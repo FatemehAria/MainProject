@@ -5,6 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./components/Signup.tsx";
 import Users from "./components/Users.tsx";
+import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <div dir="rtl">
     <StrictMode>
+      <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={router} />
     </StrictMode>
   </div>
