@@ -9,7 +9,7 @@ namespace Repositories
 
         Task<CustomActionResult<List<UserInfoModel>>> getUsers();
 
-        Task<UserModel> editUser(UserModel model);
+        Task<UserInfoModel> editUser(UserModel model);
 
         Task<CustomActionResult<bool>> deleteUserById(int id);
 
@@ -76,16 +76,14 @@ namespace Repositories
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
-                using (connection.data)
-                {
-                    var command = "prc_delete_user";
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add(name: "@user_id", value: id);
-                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                    result.message = "user deleted.";
-                    result.success = true;
-                    result.data = true;
-                }
+                var command = "prc_delete_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "@user_id", value: id);
+                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result.message = "user deleted.";
+                result.success = true;
+                result.data = true;
+
             }
             catch
             {
@@ -95,9 +93,9 @@ namespace Repositories
             return result;
         }
 
-        public async Task<UserModel> editUser(UserModel model)
+        public async Task<UserInfoModel> editUser(UserModel model)
         {
-            CustomActionResult<UserModel> result = new CustomActionResult<UserModel>();
+            CustomActionResult<UserInfoModel> result = new CustomActionResult<UserInfoModel>();
             try
             {
                 var connection = await _dbConnection.connectToDatabase();

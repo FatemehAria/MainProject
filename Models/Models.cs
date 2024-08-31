@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class UserModelAfterRegistration : UserModel
+    public class UserModelAfterRegistration : UserInfoModel
     {
         public string token { get; set; }
         public decimal is_deleted { get; set; }
