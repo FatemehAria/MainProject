@@ -5,17 +5,25 @@ import { getUsers } from "../utils/util";
 import toast from "react-hot-toast";
 
 function Users() {
-  const [allUsers, setAllUsers] = useState<{
-    userId: number;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-  }[]>([]);
+  const [userStatus, setUsersStatus] = useState({
+    loading: false,
+    errorMsg: "",
+  });
+  const [allUsers, setAllUsers] = useState<
+    {
+      userId: number;
+      firstName: string;
+      lastName: string;
+      phoneNumber: string;
+    }[]
+  >([]);
   const [showEditForm, setShowEditForm] = useState({
     show: false,
     userId: "",
   });
-
+  {
+    /* <div class="loader"></div>  */
+  }
   const handleToDelete = async (userId: number) => {
     try {
       const { data } = await app.post("/User/DeleteUserById", userId);
@@ -33,7 +41,7 @@ function Users() {
   };
 
   useEffect(() => {
-    getUsers(setAllUsers);
+    getUsers(setAllUsers, setUsersStatus);
   }, []);
 
   return (
@@ -53,7 +61,7 @@ function Users() {
         />
       </div>
 
-      <div className="grid grid-cols-5 justify-center items-center font-semibold my-4">
+      <div className="grid grid-cols-5 justify-center items-center font-semibold my-4 relative">
         <p>ردیف</p>
         <p>نام</p>
         <p>نام خانوادگی</p>
@@ -61,48 +69,54 @@ function Users() {
         <p>عملیات</p>
       </div>
       <div className="grid grid-cols-1 gap-3">
-        {allUsers?.map(
-          (
-            item: {
-              userId: number;
-              firstName: string;
-              lastName: string;
-              phoneNumber: string;
-            },
-            index
-          ) => (
-            <div
-              key={item.userId}
-              className={`grid grid-cols-5 justify-center items-center ${
-                item.userId === +showEditForm.userId
-                  ? "bg-yellow-400 rounded-lg py-2 text-white text-lg"
-                  : ""
-              }`}
-            >
-              <p className="font-semibold">{index + 1}</p>
-              <p>{item.firstName}</p>
-              <p>{item.lastName}</p>
-              <p>{item.phoneNumber}</p>
-              <p className="flex flex-row justify-center w-full gap-3">
-                <button
-                  className="bg-red-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
-                  onClick={() => handleToDelete(item.userId)}
-                >
-                  حذف کاربر
-                </button>
-                <button
-                  className="bg-green-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
-                  onClick={() =>
-                    setShowEditForm({
-                      show: true,
-                      userId: item.userId.toString(),
-                    })
-                  }
-                >
-                  ویرایش کاربر
-                </button>
-              </p>
-            </div>
+        {userStatus.loading ? (
+          <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+            <div className="loader"></div>
+          </div>
+        ) : (
+          allUsers?.map(
+            (
+              item: {
+                userId: number;
+                firstName: string;
+                lastName: string;
+                phoneNumber: string;
+              },
+              index
+            ) => (
+              <div
+                key={item.userId}
+                className={`grid grid-cols-5 justify-center items-center ${
+                  item.userId === +showEditForm.userId
+                    ? "bg-yellow-400 rounded-lg py-2 text-white text-lg"
+                    : ""
+                }`}
+              >
+                <p className="font-semibold">{index + 1}</p>
+                <p>{item.firstName}</p>
+                <p>{item.lastName}</p>
+                <p>{item.phoneNumber}</p>
+                <p className="flex flex-row justify-center w-full gap-3">
+                  <button
+                    className="bg-red-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
+                    onClick={() => handleToDelete(item.userId)}
+                  >
+                    حذف کاربر
+                  </button>
+                  <button
+                    className="bg-green-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
+                    onClick={() =>
+                      setShowEditForm({
+                        show: true,
+                        userId: item.userId.toString(),
+                      })
+                    }
+                  >
+                    ویرایش کاربر
+                  </button>
+                </p>
+              </div>
+            )
           )
         )}
       </div>
