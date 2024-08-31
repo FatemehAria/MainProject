@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Models;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -68,6 +67,7 @@ namespace Repositories
                     userModelIn.lastName = user.lastName;
                     userModelIn.phoneNumber = user.phoneNumber;
                     userModelIn.token = token;
+                    userModelIn.is_deleted = user.is_deleted;
                     result.data.Add(userModelIn);
                     result.message = "login successful.";
                     result.success = true;
