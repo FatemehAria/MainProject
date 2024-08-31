@@ -5,7 +5,12 @@ import { getUsers } from "../utils/util";
 import toast from "react-hot-toast";
 
 function Users() {
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState<{
+    userId: number;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  }[]>([]);
   const [showEditForm, setShowEditForm] = useState({
     show: false,
     userId: "",
@@ -29,7 +34,7 @@ function Users() {
 
   useEffect(() => {
     getUsers(setAllUsers);
-  }, [showEditForm.show]);
+  }, []);
 
   return (
     <div className="text-center">
@@ -43,6 +48,8 @@ function Users() {
         <EditUserForm
           userId={Number(showEditForm.userId)}
           setShowForm={setShowEditForm}
+          setAllUsers={setAllUsers}
+          allUsers={allUsers}
         />
       </div>
 

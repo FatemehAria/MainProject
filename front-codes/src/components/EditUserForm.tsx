@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "./FormInput";
 import SubmissionBtn from "./SubmissionButton";
 import app from "../service/service";
@@ -6,6 +6,8 @@ import app from "../service/service";
 function EditUserForm({
   userId,
   setShowForm,
+  setAllUsers,
+  allUsers,
 }: {
   userId: number;
   setShowForm: React.Dispatch<
@@ -14,6 +16,22 @@ function EditUserForm({
       userId: string;
     }>
   >;
+  setAllUsers: React.Dispatch<
+    React.SetStateAction<
+      {
+        userId: number;
+        firstName: string;
+        lastName: string;
+        phoneNumber: string;
+      }[]
+    >
+  >;
+  allUsers: {
+    userId: number;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  }[];
 }) {
   const [editInfo, setEditInfo] = useState({
     firstName: "",
@@ -21,6 +39,19 @@ function EditUserForm({
     phoneNumber: "",
     password: "",
   });
+
+  useEffect(() => {
+    const userToEdit = allUsers.find((user) => user.userId === userId);
+    if (userToEdit) {
+      setEditInfo({
+        firstName: userToEdit.firstName || "",
+        lastName: userToEdit.lastName || "",
+        phoneNumber: userToEdit.phoneNumber || "",
+        password: "",
+      });
+    }
+  }, [userId, allUsers]);
+
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -32,7 +63,14 @@ function EditUserForm({
         password: editInfo.password,
       });
       console.log(data);
-      setShowForm((last) => ({ ...last, show: false }));
+      if (data.success) {
+        setAllUsers((last: any) =>
+          last.map((user: { userId: number }) =>
+            user.userId === userId ? { ...user, ...editInfo } : user
+          )
+        );
+      }
+      setShowForm(() => ({ userId: "", show: false }));
     } catch (error) {
       console.log(error);
     }
