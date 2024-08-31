@@ -100,18 +100,16 @@ namespace Repositories
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
-                using (connection.data)
-                {
-                    var command = "prc_edit_user";
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add(name: "user_id", value: model.userId);
-                    parameters.Add(name: "new_first_name", value: model.firstName);
-                    parameters.Add(name: "new_last_name", value: model.lastName);
-                    parameters.Add(name: "new_phone_number", value: model.phoneNumber);
-                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                    result.message = "user modified.";
-                    result.success = true;
-                }
+                var command = "prc_edit_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "user_id", value: model.userId);
+                parameters.Add(name: "new_first_name", value: model.firstName);
+                parameters.Add(name: "new_last_name", value: model.lastName);
+                parameters.Add(name: "new_phone_number", value: model.phoneNumber);
+                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result.message = "user modified.";
+                result.success = true;
+
             }
             catch
             {
