@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import app from "../service/service";
+import EditUserForm from "./EditUserForm";
 
 function Users() {
   const [allUsers, setAllUsers] = useState([]);
+  const [showEditForm, setShowEditForm] = useState({
+    show: false,
+    userId: "",
+  });
 
   const getUsers = async () => {
     try {
@@ -29,6 +34,9 @@ function Users() {
   }, []);
   return (
     <div>
+      {showEditForm.show && (
+        <EditUserForm userId={Number(showEditForm.userId)} />
+      )}
       <div className="grid grid-cols-5">
         <p>ردیف</p>
         <p>نام</p>
@@ -61,7 +69,12 @@ function Users() {
                 </button>
                 <button
                   className="bg-green-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
-                  onClick={() => deleteUser(item.userId)}
+                  onClick={() =>
+                    setShowEditForm({
+                      show: true,
+                      userId: item.userId.toString(),
+                    })
+                  }
                 >
                   ویرایش کاربر
                 </button>
