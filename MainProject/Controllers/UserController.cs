@@ -40,9 +40,9 @@ namespace MainProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteUserById(int id)
+        public async Task<IActionResult> DeleteUserById(int user_id)
         {
-            return Ok(await _userService.deleteUserById(id));
+            return Ok(await _userService.deleteUserById(user_id));
         }
     }
 }

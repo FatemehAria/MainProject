@@ -79,7 +79,6 @@ namespace Repositories
                 var command = "prc_delete_user";
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add(name: "user_id", value: user_id);
-                Console.WriteLine("Deleting user with ID: " + user_id);
                 await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                 result.message = "user deleted.";
                 result.success = true;
