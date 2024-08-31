@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import app from "../service/service";
 import EditUserForm from "./EditUserForm";
 import { getUsers } from "../utils/util";
+import toast from "react-hot-toast";
 
 function Users() {
   const [allUsers, setAllUsers] = useState([]);
@@ -10,20 +11,27 @@ function Users() {
     userId: "",
   });
 
-  const deleteUser = async (userId: number) => {
+  const handleToDelete = async (userId: number) => {
     try {
       const { data } = await app.post("/User/DeleteUserById", {
-        userId,
+        user_id: userId,
       });
-      console.log(data);
+      if (data.success) {
+        setAllUsers((prevUsers) =>
+          prevUsers.filter((user: { userId: number }) => user.userId !== userId)
+        );
+        toast.success("کاربر با موفقیت حذف شد.");
+      }
     } catch (error) {
+      toast.error("خطا در حذف کاربر.");
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     getUsers(setAllUsers);
-  }, []);
+  }, [showEditForm.show]);
+
   return (
     <div className="text-center">
       <div
@@ -59,7 +67,11 @@ function Users() {
           ) => (
             <div
               key={item.userId}
-              className="grid grid-cols-5 justify-center items-center"
+              className={`grid grid-cols-5 justify-center items-center ${
+                item.userId === +showEditForm.userId
+                  ? "bg-yellow-400 rounded-lg py-2 text-white text-lg"
+                  : ""
+              }`}
             >
               <p className="font-semibold">{index + 1}</p>
               <p>{item.firstName}</p>
@@ -68,7 +80,7 @@ function Users() {
               <p className="flex flex-row justify-center w-full gap-3">
                 <button
                   className="bg-red-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
-                  onClick={() => deleteUser(item.userId)}
+                  onClick={() => handleToDelete(item.userId)}
                 >
                   حذف کاربر
                 </button>

@@ -25,7 +25,7 @@ function Login() {
       navigation("/users");
     } catch (error) {
       console.log(error);
-      toast.success("خطا در ورود.");
+      toast.error("خطا در ورود.");
     }
   };
 

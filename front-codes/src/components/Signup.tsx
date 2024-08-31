@@ -3,6 +3,7 @@ import FormInput from "./FormInput";
 import SubmissionBtn from "./SubmissionButton";
 import app from "../service/service";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Signup() {
   const localToken = sessionStorage.getItem("token") as string;
@@ -25,9 +26,11 @@ function Signup() {
         token: "",
       });
       console.log(data);
+      toast.success("ثبت نام با موفقیت انجام شد. لطفا وارد شوید.");
       navigation("/");
     } catch (error) {
       console.log(error);
+      toast.error("خطا در ثبت نام.");
     }
   };
   if (!localToken) {
