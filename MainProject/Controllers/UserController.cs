@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -33,7 +34,7 @@ namespace MainProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(UserModelAfterRegistration model)
+        public async Task<IActionResult> EditUser(UserModel model)
         {
             return Ok(await _userService.editUser(model));
         }

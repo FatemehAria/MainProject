@@ -7,13 +7,13 @@ namespace Services
     {
         Task<CustomActionResult> createUser(UserModel model);
 
-        Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
+        Task<CustomActionResult<List<UserInfoModel>>> getUsers();
 
         Task<CustomActionResult<List<UserModelAfterRegistration>>> loginUser(LoginModel model);
 
-        Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model);
+        Task<UserInfoModel> editUser(UserModel model);
 
-        Task<bool> deleteUserById(int id);
+        Task<CustomActionResult<bool>> deleteUserById(int id);
 
       
     }
@@ -33,7 +33,7 @@ namespace Services
         {
             return await _repositories.createUser(model);
         }
-        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers()
+        public async Task<CustomActionResult<List<UserInfoModel>>> getUsers()
         {
             return await _repositories.getUsers();
         }
@@ -45,12 +45,12 @@ namespace Services
 
             return checkResult;
         }
-        public async Task<bool> deleteUserById(int id)
+        public async Task<CustomActionResult<bool>> deleteUserById(int id)
         {
             return await _repositories.deleteUserById(id);
         }
 
-        public async Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model)
+        public async Task<UserInfoModel> editUser(UserModel model)
         {
             return await _repositories.editUser(model);
         }

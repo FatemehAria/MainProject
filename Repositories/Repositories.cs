@@ -7,11 +7,11 @@ namespace Repositories
     {
         Task<CustomActionResult> createUser(UserModel model);
 
-        Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers();
+        Task<CustomActionResult<List<UserInfoModel>>> getUsers();
 
-        Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model);
+        Task<UserInfoModel> editUser(UserModel model);
 
-        Task<bool> deleteUserById(int id);
+        Task<CustomActionResult<bool>> deleteUserById(int id);
 
     }
     public class UserRepository : IUserRepositories
@@ -29,19 +29,17 @@ namespace Repositories
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
-                using (connection.data)
-                {
-                    var command = "prc_create_user";
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add(name: "first_name", value: model.firstName);
-                    parameters.Add(name: "last_name", value: model.lastName);
-                    parameters.Add(name: "phone_number", value: model.phoneNumber);
-                    parameters.Add(name: "password", value: model.password);
+                var command = "prc_create_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "first_name", value: model.firstName);
+                parameters.Add(name: "last_name", value: model.lastName);
+                parameters.Add(name: "phone_number", value: model.phoneNumber);
+                parameters.Add(name: "password", value: model.password);
 
-                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                    result.message = "user created.";
-                    result.success = true;
-                }
+                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result.message = "user created.";
+                result.success = true;
+
             }
             catch
             {
@@ -51,15 +49,15 @@ namespace Repositories
             return result;
         }
 
-        public async Task<CustomActionResult<List<UserModelAfterRegistration>>> getUsers()
+        public async Task<CustomActionResult<List<UserInfoModel>>> getUsers()
         {
-            var result = new CustomActionResult<List<UserModelAfterRegistration>>();
+            var result = new CustomActionResult<List<UserInfoModel>>();
             try
             {
                 var connection = await _dbConnection.connectToDatabase();
                 if (!connection.success) return result;
                 var command = "prc_get_users";
-                result.data = (await connection.data.QueryAsync<UserModelAfterRegistration>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
+                result.data = (await connection.data.QueryAsync<UserInfoModel>(command, null, commandType: System.Data.CommandType.StoredProcedure)).ToList();
                 result.message = "";
                 result.success = true;
             }
@@ -71,34 +69,33 @@ namespace Repositories
             return result;
         }
 
-        public async Task<bool> deleteUserById(int id)
+        public async Task<CustomActionResult<bool>> deleteUserById(int id)
         {
-            CustomActionResult result = new CustomActionResult();
+            CustomActionResult<bool> result = new CustomActionResult<bool>();
             try
             {
                 var connection = await _dbConnection.connectToDatabase();
-                if (!connection.success) return result.success;
-                using (connection.data)
-                {
-                    var command = "prc_delete_user";
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add(name: "@user_id", value: id);
-                    await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                    result.message = "user deleted.";
-                    result.success = true;
-                }
+                if (!connection.success) return result;
+                var command = "prc_delete_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "@user_id", value: id);
+                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result.message = "user deleted.";
+                result.success = true;
+                result.data = true;
+
             }
             catch
             {
                 result.message = "user deletion failed.";
-                result.success = false;
+                result.data = false;
             }
-            return result.success;
+            return result;
         }
 
-        public async Task<UserModelAfterRegistration> editUser(UserModelAfterRegistration model)
+        public async Task<UserInfoModel> editUser(UserModel model)
         {
-            CustomActionResult<UserModelAfterRegistration> result = new CustomActionResult<UserModelAfterRegistration>();
+            CustomActionResult<UserInfoModel> result = new CustomActionResult<UserInfoModel>();
             try
             {
                 var connection = await _dbConnection.connectToDatabase();

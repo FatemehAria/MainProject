@@ -26,27 +26,18 @@ builder.Services.AddSingleton<IUserLoginRepository, UserLoginRepository>();
 
 builder.Services.AddSingleton<IUserServices, UserService>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JWT:Key").Value)),
-        ClockSkew = TimeSpan.Zero
-    };
-});
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: originsToAllow,
-                      policy =>
-                      {
-                          policy.WithOrigins("*");
-                      });
+    options.AddPolicy(name: originsToAllow, policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
+
+
+builder.Services.AddCors(options => { options.AddPolicy(name: originsToAllow, policy => { policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); }); });
 
 var app = builder.Build();
 
