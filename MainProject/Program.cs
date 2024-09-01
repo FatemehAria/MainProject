@@ -39,6 +39,22 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddCors(options => { options.AddPolicy(name: originsToAllow, policy => { policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); }); });
 
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+   options =>
+   {
+       options.TokenValidationParameters = new TokenValidationParameters()
+       {
+           ValidateIssuer = false,
+           ValidateAudience = false,
+           ValidateLifetime = true,
+           ValidateIssuerSigningKey = true,
+           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JWT:Key").Value)),
+           ClockSkew = TimeSpan.Zero
+
+       };
+   });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
