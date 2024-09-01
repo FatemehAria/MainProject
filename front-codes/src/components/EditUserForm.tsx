@@ -86,7 +86,7 @@ function EditUserForm({
   };
   return (
     <form className="flex flex-col gap-5" onSubmit={(e) => handleEdit(e)}>
-      <p>ویرایش اطلاعات</p>
+      <p className="font-semibold text-xl my-3">ویرایش اطلاعات</p>
       <FormInput
         value={editInfo.firstName}
         label="نام"
@@ -117,17 +117,17 @@ function EditUserForm({
         }
         autoFocus={false}
       />
-      <FormInput
+      {/* <FormInput
         value={editInfo.password}
         label="رمز عبور"
         type="text"
-        name="phoneNumber"
+        name="password"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setEditInfo((last) => ({ ...last, password: e.target.value }))
         }
         autoFocus={false}
-      />
-      <SubmissionBtn text="ویرایش" />
+      /> */}
+      <SubmissionBtn text="ویرایش" validation={true} />
     </form>
   );
 }
