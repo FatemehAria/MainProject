@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Models
 {
     public class UserModelAfterRegistration : UserInfoModel
     {
@@ -28,8 +30,9 @@
 
     public class LoginModel
     {
+        [Required]
         public string phoneNumber { get; set; }
-
+        [Required]
         public string password { get; set; }
     }
 

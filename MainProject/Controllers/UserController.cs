@@ -1,13 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
+using System.Net;
 
 namespace MainProject.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _userService;
@@ -22,6 +23,7 @@ namespace MainProject.Controllers
             return Ok(await _userService.createUser(model));
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetUsers()
         {
             return Ok(await _userService.getUsers());
@@ -30,16 +32,25 @@ namespace MainProject.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginUser(LoginModel model)
         {
-            return Ok(await _userService.loginUser(model));
+            if (ModelState.IsValid)
+            {
+                return Ok(await _userService.loginUser(model));
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EditUser(UserModel model)
         {
             return Ok(await _userService.editUser(model));
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteUserById([FromBody] int user_id)
         {
             return Ok(await _userService.deleteUserById(user_id));
