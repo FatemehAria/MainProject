@@ -24,12 +24,13 @@ function Users() {
     show: false,
     userId: "",
   });
-  {
-    /* <div class="loader"></div>  */
-  }
   const handleToDelete = async (userId: number) => {
     try {
-      const { data } = await app.post("/User/DeleteUserById", userId);
+      const { data } = await app.post("/User/DeleteUserById", userId, {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      });
       if (data.success) {
         setAllUsers((prevUsers) =>
           prevUsers.filter((user: { userId: number }) => user.userId !== userId)
@@ -48,7 +49,7 @@ function Users() {
     navigate("/");
   };
   useEffect(() => {
-    getUsers(setAllUsers, setUsersStatus);
+    getUsers(setAllUsers, setUsersStatus, localToken);
   }, []);
 
   if (localToken) {
@@ -136,8 +137,8 @@ function Users() {
         </div>
       </div>
     );
-  }else{
-    return <div></div>
+  } else {
+    return <div></div>;
   }
 }
 

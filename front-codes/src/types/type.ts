@@ -7,9 +7,10 @@ export type FormInputProps = {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   value: string;
   autoFocus: boolean;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 export type SubmissionBtnProps = {
   text: string;
-  // validation?: boolean;
+  validation?: boolean;
   type?: "submit" | "button" | "reset" | undefined;
 };

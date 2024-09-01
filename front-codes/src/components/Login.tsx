@@ -58,7 +58,7 @@ function Login() {
           <span className="text-blue-500 font-semibold">ثبت نام</span> کنید.
         </Link>
       </div>
-      <SubmissionBtn text="ورود" type="submit" />
+      <SubmissionBtn text="ورود" type="submit" validation={true}/>
     </form>
   );
 }

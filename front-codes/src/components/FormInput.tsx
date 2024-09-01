@@ -8,7 +8,8 @@ function FormInput({
   pattern,
   placeholder,
   type,
-  autoFocus
+  autoFocus,
+  onBlur,
 }: FormInputProps) {
   return (
     <div className="relative">
@@ -25,6 +26,7 @@ function FormInput({
         pattern={pattern}
         name={name}
         autoFocus={autoFocus}
+        onBlur={onBlur}
       />
     </div>
   );
