@@ -16,11 +16,16 @@ export const getUsers = async (
       loading: boolean;
       errorMsg: string;
     }>
-  >
+  >,
+  token: string
 ) => {
   try {
     setUsersStatus((last) => ({ ...last, loading: true }));
-    const { data } = await app("/User/GetUsers");
+    const { data } = await app("/User/GetUsers", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log(data);
     setAllUsers(data.data);
   } catch (error) {

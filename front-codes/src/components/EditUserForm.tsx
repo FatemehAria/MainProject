@@ -33,6 +33,7 @@ function EditUserForm({
     phoneNumber: string;
   }[];
 }) {
+  const localToken = sessionStorage.getItem("token") as string;
   const [editInfo, setEditInfo] = useState({
     firstName: "",
     lastName: "",
@@ -55,13 +56,21 @@ function EditUserForm({
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const { data } = await app.post("/User/EditUser", {
-        userId,
-        firstName: editInfo.firstName,
-        lastName: editInfo.lastName,
-        phoneNumber: editInfo.phoneNumber,
-        password: editInfo.password,
-      });
+      const { data } = await app.post(
+        "/User/EditUser",
+        {
+          userId,
+          firstName: editInfo.firstName,
+          lastName: editInfo.lastName,
+          phoneNumber: editInfo.phoneNumber,
+          password: editInfo.password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
       console.log(data);
       if (data.success) {
         setAllUsers((last: any) =>
