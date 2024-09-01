@@ -106,6 +106,7 @@ namespace Repositories
                 parameters.Add(name: "new_first_name", value: model.firstName);
                 parameters.Add(name: "new_last_name", value: model.lastName);
                 parameters.Add(name: "new_phone_number", value: model.phoneNumber);
+                parameters.Add(name: "new_password", value: model.password);
                 await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                 result.message = "user modified.";
                 result.success = true;

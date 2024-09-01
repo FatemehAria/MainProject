@@ -57,20 +57,28 @@ namespace Repositories
                 parameters.Add(name: "password", value: model.password);
 
                 var user = await connection.data.QueryFirstOrDefaultAsync<UserModelAfterRegistration>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                
+
                 if (user != null)
                 {
-                    string token = generateToken(result);
-                    var userModelIn = new UserModelAfterRegistration();
-                    userModelIn.userId = user.userId;
-                    userModelIn.firstName = user.firstName;
-                    userModelIn.lastName = user.lastName;
-                    userModelIn.phoneNumber = user.phoneNumber;
-                    userModelIn.token = token;
-                    userModelIn.is_deleted = user.is_deleted;
-                    result.data.Add(userModelIn);
-                    result.message = "login successful.";
-                    result.success = true;
+                    if (user.userId != 0)
+                    {
+                        string token = generateToken(result);
+                        var userModelIn = new UserModelAfterRegistration();
+                        userModelIn.userId = user.userId;
+                        userModelIn.firstName = user.firstName;
+                        userModelIn.lastName = user.lastName;
+                        userModelIn.phoneNumber = user.phoneNumber;
+                        userModelIn.token = token;
+                        userModelIn.is_deleted = user.is_deleted;
+                        result.data.Add(userModelIn);
+                        result.message = "login successful.";
+                        result.success = true;
+                    }
+                    else
+                    {
+                        result.message = "user not found.";
+                        result.success = false;
+                    }
                 }
                 else
                 {
