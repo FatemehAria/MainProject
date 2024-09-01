@@ -89,7 +89,7 @@ function Users() {
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
               <div className="loader"></div>
             </div>
-          ) : (
+          ) : allUsers.length > 0 ? (
             allUsers?.map(
               (
                 item: {
@@ -134,6 +134,8 @@ function Users() {
                 </div>
               )
             )
+          ) : (
+            <p className="bg-red-500 text-white text-lg font-semibold rounded-md py-1">کاربری یافت نشد.</p>
           )}
         </div>
       </div>
