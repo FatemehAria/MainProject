@@ -31,15 +31,22 @@ namespace Repositories
                 if (!connection.success) return result;
                 var command = "prc_create_user";
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add(name: "first_name", value: model.firstName);
-                parameters.Add(name: "last_name", value: model.lastName);
-                parameters.Add(name: "phone_number", value: model.phoneNumber);
-                parameters.Add(name: "password", value: model.password);
+                parameters.Add(name: "p_first_name", value: model.firstName);
+                parameters.Add(name: "p_last_name", value: model.lastName);
+                parameters.Add(name: "p_phone_number", value: model.phoneNumber);
+                parameters.Add(name: "p_password", value: model.password);
 
-                await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                result.message = "user created.";
-                result.success = true;
-
+                var user = await connection.data.QuerySingleOrDefaultAsync<int>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                if (user == -1)
+                {
+                    result.message = "user already exists.";
+                    result.success = false;
+                }
+                else
+                {
+                    result.message = "user created.";
+                    result.success = true;
+                }
             }
             catch
             {
@@ -106,6 +113,7 @@ namespace Repositories
                 parameters.Add(name: "new_first_name", value: model.firstName);
                 parameters.Add(name: "new_last_name", value: model.lastName);
                 parameters.Add(name: "new_phone_number", value: model.phoneNumber);
+                parameters.Add(name: "new_password", value: model.password);
                 await connection.data.ExecuteAsync(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
                 result.message = "user modified.";
                 result.success = true;
