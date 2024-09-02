@@ -24,7 +24,7 @@ function Login() {
         toast.success("با موفقیت وارد شدید.");
         sessionStorage.setItem("token", data.data[0]?.token);
         navigation("/users");
-      } else if (data.message === "invalid username or password.") {
+      } else if (data.message === "Invalid username or password.") {
         toast.error("رمز عبور یا شماره تماس اشتباه است.");
       } else {
         toast.error("کاربری یافت نشد.");
