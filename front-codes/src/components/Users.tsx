@@ -4,6 +4,7 @@ import EditUserForm from "./EditUserForm";
 import { getUsers } from "../utils/util";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import PanelButton from "./PanelButton";
 
 function Users() {
   const localToken = sessionStorage.getItem("token") as string;
@@ -56,12 +57,7 @@ function Users() {
   if (localToken) {
     return (
       <div className="">
-        <button
-          className="bg-blue-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 my-3 rounded-[7px] font-semibold"
-          onClick={() => handleLogout()}
-        >
-          خروج
-        </button>
+        <PanelButton clickHandler={() => handleLogout()} color="bg-blue-600" text="خروج"/>
         <div
           className={`${
             showEditForm.show
@@ -112,30 +108,30 @@ function Users() {
                   <p className="col-span-2 lg:col-span-1">{item.firstName}</p>
                   <p className="col-span-3 lg:col-span-1">{item.lastName}</p>
                   <p className="col-span-2 lg:col-span-1">{item.phoneNumber}</p>
-                  <p className="flex lg:flex-row flex-col justify-center w-full gap-3 col-span-2 lg:col-span-1">
-                    <button
-                      className="bg-red-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
-                      onClick={() => handleToDelete(item.userId)}
-                    >
-                      حذف کاربر
-                    </button>
-                    <button
-                      className="bg-green-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
-                      onClick={() =>
+                  <p className="flex lg:flex-row flex-col items-center justify-center w-full gap-3 col-span-2 lg:col-span-1">
+                    <PanelButton
+                      clickHandler={() => handleToDelete(item.userId)}
+                      color="bg-red-600"
+                      text="حذف کاربر"
+                    />
+                    <PanelButton
+                      clickHandler={() =>
                         setShowEditForm({
                           show: true,
                           userId: item.userId.toString(),
                         })
                       }
-                    >
-                      ویرایش کاربر
-                    </button>
+                      color="bg-green-600"
+                      text="ویرایش کاربر"
+                    />
                   </p>
                 </div>
               )
             )
           ) : (
-            <p className="bg-red-500 text-white text-lg font-semibold rounded-md py-1">کاربری یافت نشد.</p>
+            <p className="bg-red-500 text-white text-lg font-semibold rounded-md py-1">
+              کاربری یافت نشد.
+            </p>
           )}
         </div>
       </div>

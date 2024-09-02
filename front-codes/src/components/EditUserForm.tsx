@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import FormInput from "./FormInput";
 import SubmissionBtn from "./SubmissionButton";
 import app from "../service/service";
+import toast from "react-hot-toast";
+import Divider from "./Divider";
 
 function EditUserForm({
   userId,
@@ -78,57 +80,55 @@ function EditUserForm({
             user.userId === userId ? { ...user, ...editInfo } : user
           )
         );
+        toast.success("کاربر با موفقیت ویرایش شد.");
       }
       setShowForm(() => ({ userId: "", show: false }));
     } catch (error) {
       console.log(error);
+      toast.success("خطا در ویرایش کاربر.");
     }
   };
   return (
-    <form className="flex flex-col gap-5" onSubmit={(e) => handleEdit(e)}>
-      <p className="font-semibold text-xl my-3">ویرایش اطلاعات</p>
-      <FormInput
-        value={editInfo.firstName}
-        label="نام"
-        type="text"
-        name="firstName"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setEditInfo((last) => ({ ...last, firstName: e.target.value }))
-        }
-        autoFocus={true}
-      />
-      <FormInput
-        value={editInfo.lastName}
-        label="نام خانوادگی"
-        type="text"
-        name="lastName"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setEditInfo((last) => ({ ...last, lastName: e.target.value }))
-        }
-        autoFocus={false}
-      />
-      <FormInput
-        value={editInfo.phoneNumber}
-        label="شماره تماس"
-        type="text"
-        name="phoneNumber"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setEditInfo((last) => ({ ...last, phoneNumber: e.target.value }))
-        }
-        autoFocus={false}
-      />
-      {/* <FormInput
-        value={editInfo.password}
-        label="رمز عبور"
-        type="text"
-        name="password"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setEditInfo((last) => ({ ...last, password: e.target.value }))
-        }
-        autoFocus={false}
-      /> */}
-      <SubmissionBtn text="ویرایش" validation={true} />
-    </form>
+    <div>
+      <form className="flex flex-col gap-5" onSubmit={(e) => handleEdit(e)}>
+        <p className="font-semibold text-xl my-3">ویرایش اطلاعات</p>
+        <FormInput
+          value={editInfo.firstName}
+          label="نام"
+          type="text"
+          name="firstName"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEditInfo((last) => ({ ...last, firstName: e.target.value }))
+          }
+          autoFocus={true}
+        />
+        <FormInput
+          value={editInfo.lastName}
+          label="نام خانوادگی"
+          type="text"
+          name="lastName"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEditInfo((last) => ({ ...last, lastName: e.target.value }))
+          }
+          autoFocus={false}
+        />
+        <FormInput
+          value={editInfo.phoneNumber}
+          label="شماره تماس"
+          type="text"
+          name="phoneNumber"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEditInfo((last) => ({ ...last, phoneNumber: e.target.value }))
+          }
+          autoFocus={false}
+          maxLength={11}
+        />
+        <div className="flex justify-end">
+          <SubmissionBtn text="ویرایش" validation={true} />
+        </div>
+        <Divider />
+      </form>
+    </div>
   );
 }
 

@@ -49,7 +49,7 @@ function Signup() {
         if (data.success) {
           toast.success("ثبت نام با موفقیت انجام شد. لطفا وارد شوید.");
           navigation("/");
-        }else{
+        } else {
           toast.error("کاربر با این مشخصات قبلا ثبت شده است.");
         }
       } catch (error) {
@@ -135,7 +135,9 @@ function Signup() {
             <ValidationErrorMsg>{errors.confirmPassword}</ValidationErrorMsg>
           )}
         </div>
-        <SubmissionBtn text="ثبت نام" validation={isValid} />
+        <div className="flex flex-row justify-end">
+          <SubmissionBtn text="ثبت نام" validation={isValid} />
+        </div>
       </form>
     );
   } else {

@@ -24,7 +24,9 @@ function Login() {
         toast.success("با موفقیت وارد شدید.");
         sessionStorage.setItem("token", data.data[0]?.token);
         navigation("/users");
-      }else{
+      } else if (data.message === "invalid username or password.") {
+        toast.error("رمز عبور یا شماره تماس اشتباه است.");
+      } else {
         toast.error("کاربری یافت نشد.");
       }
     } catch (error) {
@@ -45,6 +47,7 @@ function Login() {
           setLoginInfo((last) => ({ ...last, phoneNumber: e.target.value }))
         }
         autoFocus={true}
+        maxLength={11}
       />
       <FormInput
         value={loginInfo.password}
@@ -62,7 +65,16 @@ function Login() {
           <span className="text-blue-500 font-semibold">ثبت نام</span> کنید.
         </Link>
       </div>
-      <SubmissionBtn text="ورود" type="submit" validation={true} />
+      <div className="flex justify-end">
+        <SubmissionBtn
+          text="ورود"
+          type="submit"
+          validation={
+            loginInfo.password.length !== 0 &&
+            loginInfo.phoneNumber.length !== 0
+          }
+        />
+      </div>
     </form>
   );
 }
