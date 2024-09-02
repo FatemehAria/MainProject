@@ -10,6 +10,7 @@ function FormInput({
   type,
   autoFocus,
   onBlur,
+  maxLength
 }: FormInputProps) {
   return (
     <div className="relative">
@@ -27,6 +28,8 @@ function FormInput({
         name={name}
         autoFocus={autoFocus}
         onBlur={onBlur}
+        maxLength={maxLength && maxLength}
+        minLength={maxLength && maxLength}
       />
     </div>
   );

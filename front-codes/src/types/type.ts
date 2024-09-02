@@ -8,6 +8,7 @@ export type FormInputProps = {
   value: string;
   autoFocus: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  maxLength?: number;
 };
 export type SubmissionBtnProps = {
   text: string;
