@@ -60,7 +60,17 @@ namespace Repositories
 
                 if (user != null)
                 {
-                    if (user.userId != 0)
+                    if (user.userId == -1 || user.userId == -2)
+                    {
+                        result.message = "User not found.";
+                        result.success = false;
+                    }
+                    else if(user.userId == 0)
+                    {
+                        result.message = "Invalid username or password.";
+                        result.success = false;
+                    }
+                    else
                     {
                         string token = generateToken(result);
                         var userModelIn = new UserModelAfterRegistration();
@@ -74,17 +84,8 @@ namespace Repositories
                         result.message = "login successful.";
                         result.success = true;
                     }
-                    else
-                    {
-                        result.message = "user not found.";
-                        result.success = false;
-                    }
                 }
-                else
-                {
-                    result.message = "invalid username or password.";
-                    result.success = false;
-                }
+                
             }
             catch (Exception ex)
             {
