@@ -20,7 +20,8 @@ export const UserRegistrationSchema = yup.object().shape({
     .required("رمز عبور را وارد کنید."),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password"), ""], "رمزعبور تطابق ندارد."),
+    .oneOf([yup.ref("password"), ""], "رمزعبور تطابق ندارد.")
+    .required("رمز عبوررا مجدد وارد کنید."),
   phoneNumber: yup
     .string()
     .required("شماره تماس را وارد کنید.")
