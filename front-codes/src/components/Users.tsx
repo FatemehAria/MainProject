@@ -24,6 +24,7 @@ function Users() {
     show: false,
     userId: "",
   });
+
   const handleToDelete = async (userId: number) => {
     try {
       const { data } = await app.post("/User/DeleteUserById", userId, {
@@ -76,19 +77,19 @@ function Users() {
           />
         </div>
 
-        <div className="grid grid-cols-5 justify-center items-center font-semibold my-4 relative text-center">
-          <p>ردیف</p>
-          <p>نام</p>
-          <p>نام خانوادگی</p>
-          <p>شماره همراه</p>
-          <p>عملیات</p>
+        <div className="grid lg:grid-cols-5 grid-cols-10 justify-center items-center font-semibold my-4 relative text-center">
+          <p className="col-span-1">ردیف</p>
+          <p className="col-span-2 lg:col-span-1">نام</p>
+          <p className="col-span-3 lg:col-span-1">نام خانوادگی</p>
+          <p className="col-span-2 lg:col-span-1">شماره همراه</p>
+          <p className="col-span-2 lg:col-span-1">عملیات</p>
         </div>
         <div className="grid grid-cols-1 gap-3 text-center">
           {userStatus.loading ? (
             <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
               <div className="loader"></div>
             </div>
-          ) : (
+          ) : allUsers.length > 0 ? (
             allUsers?.map(
               (
                 item: {
@@ -101,17 +102,17 @@ function Users() {
               ) => (
                 <div
                   key={item.userId}
-                  className={`grid grid-cols-5 justify-center items-center ${
+                  className={`grid lg:grid-cols-5 grid-cols-10 justify-center items-center ${
                     item.userId === +showEditForm.userId
                       ? "bg-yellow-400 rounded-lg py-2 text-white text-lg"
                       : ""
                   }`}
                 >
-                  <p className="font-semibold">{index + 1}</p>
-                  <p>{item.firstName}</p>
-                  <p>{item.lastName}</p>
-                  <p>{item.phoneNumber}</p>
-                  <p className="flex flex-row justify-center w-full gap-3">
+                  <p className="font-semibold col-span-1">{index + 1}</p>
+                  <p className="col-span-2 lg:col-span-1">{item.firstName}</p>
+                  <p className="col-span-3 lg:col-span-1">{item.lastName}</p>
+                  <p className="col-span-2 lg:col-span-1">{item.phoneNumber}</p>
+                  <p className="flex lg:flex-row flex-col justify-center w-full gap-3 col-span-2 lg:col-span-1">
                     <button
                       className="bg-red-600 cursor-pointer w-[100px] text-white whitespace-nowrap py-1 rounded-[7px] font-semibold"
                       onClick={() => handleToDelete(item.userId)}
@@ -133,6 +134,8 @@ function Users() {
                 </div>
               )
             )
+          ) : (
+            <p className="bg-red-500 text-white text-lg font-semibold rounded-md py-1">کاربری یافت نشد.</p>
           )}
         </div>
       </div>

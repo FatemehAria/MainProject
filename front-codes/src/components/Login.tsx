@@ -20,9 +20,13 @@ function Login() {
         password: loginInfo.password,
       });
       console.log(data);
-      toast.success("با موفقیت وارد شدید.");
-      sessionStorage.setItem("token", data.data[0]?.token);
-      navigation("/users");
+      if (data.success) {
+        toast.success("با موفقیت وارد شدید.");
+        sessionStorage.setItem("token", data.data[0]?.token);
+        navigation("/users");
+      }else{
+        toast.error("کاربری یافت نشد.");
+      }
     } catch (error) {
       console.log(error);
       toast.error("خطا در ورود.");
@@ -58,7 +62,7 @@ function Login() {
           <span className="text-blue-500 font-semibold">ثبت نام</span> کنید.
         </Link>
       </div>
-      <SubmissionBtn text="ورود" type="submit" validation={true}/>
+      <SubmissionBtn text="ورود" type="submit" validation={true} />
     </form>
   );
 }
