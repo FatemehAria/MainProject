@@ -26,7 +26,15 @@ namespace MainProject.Controllers
         [Authorize]
         public async Task<IActionResult> GetUsers()
         {
-            return Ok(await _userService.getUsers());
+            if (ModelState.IsValid)
+            {
+                return Ok(await _userService.getUsers());
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            ;
         }
 
         [HttpPost]
@@ -46,14 +54,28 @@ namespace MainProject.Controllers
         [Authorize]
         public async Task<IActionResult> EditUser(UserModel model)
         {
-            return Ok(await _userService.editUser(model));
-        }
+            if (ModelState.IsValid)
+            {
+                return Ok(await _userService.editUser(model));
+            }
+            else
+            {
+                return BadRequest(ModelState);
 
+            }
+        }
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteUserById([FromBody] int user_id)
         {
-            return Ok(await _userService.deleteUserById(user_id));
+            if (ModelState.IsValid)
+            {
+                return Ok(await _userService.deleteUserById(user_id));
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
     }
 }
